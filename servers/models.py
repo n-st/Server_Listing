@@ -21,7 +21,7 @@ class Server(models.Model):
     main_ip = models.GenericIPAddressField()
 
     billing_type = models.CharField(max_length=1, choices=BILLING_CHOICES, default=MONTHLY)
-    purchased_at = models.DateTimeField(default=timezone.now)
+    purchased_at = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -46,9 +46,8 @@ class Server(models.Model):
         return '<br />'.join(self.notes.split('\n'))
 
     def next_due_date(self):
-        print self.purchased_at.day
-        test_time = timezone.now().replace(day=self.purchased_at.day)
-        if test_time < timezone.now():
+        test_time = timezone.now().date().replace(day=self.purchased_at.day)
+        if test_time < timezone.now().date():
             if test_time.month == 12:
                 test_time = test_time.replace(month=1)
             else:
