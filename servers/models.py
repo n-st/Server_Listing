@@ -46,13 +46,19 @@ class Server(models.Model):
         return '<br />'.join(self.notes.split('\n'))
 
     def next_due_date(self):
-        test_time = timezone.now().date().replace(day=self.purchased_at.day)
-        if test_time < timezone.now().date():
-            if test_time.month == 12:
-                test_time = test_time.replace(month=1)
-            else:
-                test_time = test_time.replace(month=test_time.month+1)
-        return test_time
+        if self.billing_type == self.MONTHLY:
+            test_time = timezone.now().date().replace(day=self.purchased_at.day)
+            if test_time < timezone.now().date():
+                if test_time.month == 12:
+                    test_time = test_time.replace(month=1)
+                else:
+                    test_time = test_time.replace(month=test_time.month+1)
+            return test_time
+        else:
+            test_time = timezone.now().date().replace(day=self.purchased_at.day, month=self.purchased_at.month)
+            if test_time < timezone.now().date():
+                test_time = test_time.replace(year=test_time.year+1)
+            return test_time
 
 
 class Extra_IP(models.Model):
