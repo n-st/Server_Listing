@@ -27,6 +27,21 @@
         <td>{{ server.total_ip_count }}</td>
       </tr>
 
+      <tr>
+        <td><strong>Next due on</strong></td>
+        <td>{{ server.next_due_date }}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Billing type</strong></td>
+        <td>{{ server.get_billing_type_display }}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Purchased on</strong></td>
+        <td>{{ server.purchased_at }}</td>
+      </tr>
+
     </table>
   </div>
 
@@ -58,4 +73,6 @@
     <a class="btn btn-primary" href="{% url 'admin:servers_server_change' server.pk %}">Edit</a>
     <a class="btn btn-danger" href="{% url 'admin:servers_server_delete' server.pk %}">Delete</a>
   </div>
+
+  {{ server.next_due_date }}
 {% endblock %}

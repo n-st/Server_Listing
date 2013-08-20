@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from datetime import timedelta
 
 
 class Server(models.Model):
@@ -43,6 +44,16 @@ class Server(models.Model):
 
     def html_notes(self):
         return '<br />'.join(self.notes.split('\n'))
+
+    def next_due_date(self):
+        print self.purchased_at.day
+        test_time = timezone.now().replace(day=self.purchased_at.day)
+        if test_time < timezone.now():
+            if test_time.month == 12:
+                test_time = test_time.replace(month=1)
+            else:
+                test_time = test_time.replace(month=test_time.month+1)
+        return test_time
 
 
 class Extra_IP(models.Model):
