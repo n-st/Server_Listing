@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 
 class Server(models.Model):
@@ -17,6 +18,9 @@ class Server(models.Model):
 
     def get_ip(self):
         return self.main_ip
+
+    def get_absolute_url(self):
+        return reverse('servers.views.view_server', args=[self.pk])
 
 
 class Extra_IP(models.Model):
