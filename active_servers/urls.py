@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     # url(r'^active_servers/', include('active_servers.foo.urls')),
 
     url(r'^$', 'servers.views.server_list'),
-
+    url(r'^server/', include('servers.urls')),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )

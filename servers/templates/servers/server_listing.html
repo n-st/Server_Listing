@@ -16,7 +16,7 @@
       {% for server in servers %}
       <tr>
         <td>{{ server.pk }}</td>
-        <td>{{ server.name }}</td>
+        <td><a href="{% url 'servers.views.view_server' server.pk %}">{{ server.name }}</a></td>
         <td>${{ server.cost }}</td>
         <td>{{ server.main_ip }}</td>
       </tr>
