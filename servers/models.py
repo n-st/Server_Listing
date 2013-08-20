@@ -84,3 +84,6 @@ class Server(models.Model):
 class Extra_IP(models.Model):
     server = models.ForeignKey(Server)
     ip = models.GenericIPAddressField()
+
+    def __unicode__(self):
+        return '{} ({})'.format(self.ip, self.server.name)
