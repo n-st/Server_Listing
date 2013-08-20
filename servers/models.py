@@ -67,7 +67,10 @@ class Server(models.Model):
         difference = next_date-current_date
 
         seconds_per_month = 2592000.0
-        return (difference.total_seconds()/seconds_per_month) * 100.0
+        seconds_per_year = 31536000.0
+        if self.billing_type == self.MONTHLY:
+            return (difference.total_seconds()/seconds_per_month) * 100.0
+        return (difference.total_seconds()/seconds_per_year) * 100.0
 
     def bar_type(self):
         time_used = self.percentage_time_used()
