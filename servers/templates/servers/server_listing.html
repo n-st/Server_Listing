@@ -10,6 +10,7 @@
         <th>Name</th>
         <th>Cost</th>
         <th>Main IP</th>
+        <th>Purchased At</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
         <td><a href="{% url 'servers.views.view_server' server.pk %}">{{ server.name }}</a></td>
         <td>${{ server.cost }}</td>
         <td>{{ server.main_ip }}</td>
+        <td>{{ server.purchased_at }}</td>
       </tr>
       {% endfor %}
     </tbody>

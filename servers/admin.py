@@ -8,10 +8,10 @@ class IPInline(admin.TabularInline):
 
 class ServerAdmin(admin.ModelAdmin):
     list_filter = ('name', 'created_at')
-    list_display = ('name', 'cost', 'main_ip', 'created_at')
+    list_display = ('name', 'cost', 'main_ip', 'purchased_at')
     search_fields = ['name']
 
-    date_hierarchy = 'created_at'
+    date_hierarchy = 'purchased_at'
     inlines = [
         IPInline
     ]
