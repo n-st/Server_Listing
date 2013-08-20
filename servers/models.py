@@ -15,6 +15,9 @@ class Server(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_ip(self):
+        return self.main_ip
+
 
 class Extra_IP(models.Model):
     server = models.ForeignKey(Server)
