@@ -60,6 +60,26 @@ class Server(models.Model):
                 test_time = test_time.replace(year=test_time.year+1)
             return test_time
 
+    def percentage_time_used(self):
+        next_date = self.next_due_date()
+        current_date = timezone.now().date()
+
+        difference = next_date-current_date
+
+        seconds_per_month = 2592000.0
+        return (difference.total_seconds()/seconds_per_month) * 100.0
+
+    def bar_type(self):
+        time_used = self.percentage_time_used()
+        prog_type = 'info'
+        if time_used >= 30:
+            prog_type = 'success'
+        if time_used >= 60:
+            prog_type = 'warning'
+        if time_used >= 80:
+            prog_type = 'danger'
+        return prog_type
+
 
 class Extra_IP(models.Model):
     server = models.ForeignKey(Server)
