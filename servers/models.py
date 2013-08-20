@@ -70,7 +70,7 @@ class Server(models.Model):
         seconds_per_year = 31536000.0
         if self.billing_type == self.MONTHLY:
             return ((seconds_per_month - difference.total_seconds())/seconds_per_month) * 100.0
-        return ((seconds_per_year - difference.total_seconds()/seconds_per_year)) * 100.0
+        return ((seconds_per_year - difference.total_seconds())/seconds_per_year) * 100.0
 
     def bar_type(self):
         time_used = self.percentage_time_used()
