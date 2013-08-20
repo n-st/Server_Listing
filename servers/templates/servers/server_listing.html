@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Server List{% endblock %}
+
+{% block content %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for server in servers %}
+      <tr>
+        <td>{{ server.pk }}</td>
+        <td>{{ server.name }}</td>
+        <td>${{ server.cost }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

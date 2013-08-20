@@ -8,9 +8,13 @@
 </head>
 <body>
   <div class="container">
-
+    <ul class="nav nav-pills" style="margin-top: 20px;">
+      <li class="active"><a href="{% url 'servers.views.server_list' %}">Home</a></li>
+      <li><a href="#">Manage Servers</a></li>
+    </ul>
+    <h1 class="page-header">{% block page_title %}{% endblock %}</h1>
+    {% block content %}{% endblock %}
   </div>
-
   <script src="//code.jquery.com/jquery.js"></script>
   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 </body>
