@@ -19,8 +19,19 @@ class Server(models.Model):
     def get_ip(self):
         return self.main_ip
 
+    def total_ip_count(self):
+        return self.extra_ip_set.count() + 1
+
     def get_absolute_url(self):
         return reverse('servers.views.view_server', args=[self.pk])
+
+    def has_notes(self):
+        if self.notes == '':
+            return False
+        return True
+
+    def html_notes(self):
+        return '<br />'.join(self.notes.split('\n'))
 
 
 class Extra_IP(models.Model):

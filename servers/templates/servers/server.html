@@ -3,7 +3,55 @@
 {% block page_title %}Server Details <small>{{ server.name }}</small>{% endblock %}
 
 {% block content %}
-  {{ server.name }}
+  <div class="panel panel-default">
+    <div class="panel-heading"><span class="text-info">{{ server.name }}</span> details</div>
+    <table class="table">
+
+      <tr>
+        <td><strong>Name</strong></td>
+        <td>{{ server.name }}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Cost</strong></td>
+        <td>${{ server.cost }}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Main IP</strong></td>
+        <td>{{ server.main_ip }}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Total IPs</strong></td>
+        <td>{{ server.total_ip_count }}</td>
+      </tr>
+
+    </table>
+  </div>
+
+  {% if server.has_notes %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Notes</h3>
+      </div>
+      <div class="panel-body">
+        {{ server.html_notes|safe }}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if server.total_ip_count != 0 %}
+  <div class="panel panel-default">
+    <div class="panel-heading">Other IP Addresses</div>
+
+    <ul class="list-group">
+      {% for ip in server.extra_ip_set.all %}
+        <li class="list-group-item">{{ ip.ip }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
 
   <div class="btn-group btn-group-justified">
     <a class="btn btn-success" href="{% url 'admin:servers_server_add' %}">Create New</a>
