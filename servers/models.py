@@ -41,6 +41,8 @@ class Server(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    check_status = models.BooleanField(default=True)
+
     def __unicode__(self):
         return self.name
 
