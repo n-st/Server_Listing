@@ -126,6 +126,9 @@ class ServerCheck(models.Model):
     online = models.BooleanField(default=True)
     did_change = models.BooleanField(default=False)
 
+    def server_name(self):
+        return self.server.name
+
     @classmethod
     def check_server(cls, server):
 
@@ -144,8 +147,11 @@ class ServerCheck(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
 
-        if ServerCheck.objects.filter(server=self).exists():
-            if self.online == ServerCheck.objects.filter(server=self).latest('check_date').online:
+        if ServerCheck.objects.filter(server=self.server, check_date__lt=self.check_date).exists():
+            if self.online == ServerCheck.objects.filter(
+                    server=self.server,
+                    check_date__lt=self.check_date
+            ).latest('check_date').online:
                 self.did_change = False
             else:
                 self.did_change = True
