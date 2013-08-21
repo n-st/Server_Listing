@@ -108,3 +108,11 @@ class Extra_IP(models.Model):
 
     def __unicode__(self):
         return '{} ({})'.format(self.ip, self.server.name)
+
+
+class ServerCheck(models.Model):
+    server = models.ForeignKey(Server)
+    ip_address = models.GenericIPAddressField()
+    check_date = models.DateTimeField()
+
+    online = models.BooleanField(default=True)
