@@ -124,6 +124,7 @@ class ServerCheck(models.Model):
     check_date = models.DateTimeField()
 
     online = models.BooleanField(default=True)
+    did_change = models.BooleanField(default=False)
 
     @classmethod
     def check_server(cls, server):
