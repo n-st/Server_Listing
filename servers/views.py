@@ -24,10 +24,6 @@ def view_server(request, server_id):
 def ping_check(request):
     servers_to_check = Server.objects.filter(check_status=True)
     for server in servers_to_check:
-        server_log = ServerCheck.check_server(server)
-        if server_log is not False:
-            print "Checked Server"
-        else:
-            print "Leeway in action"
+        ServerCheck.check_server(server)
 
     return HttpResponse("")
