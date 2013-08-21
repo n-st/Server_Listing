@@ -61,6 +61,11 @@
         <td><strong>{% if server.is_up %}Online{% else %}Offline{% endif %} time</strong></td>
         <td>{{ server.time_since_last_change | timesince }}</td>
       </tr>
+
+      <tr>
+        <td><strong>Last checked</strong></td>
+        <td>{{ server.last_checked }} ({{ server.last_checked | timesince }} ago)</td>
+      </tr>
       {% endif %}
 
     </table>

@@ -112,6 +112,9 @@ class Server(models.Model):
     def uptime_history(self):
         return ServerCheck.objects.filter(server=self, did_change=True).order_by('-check_date')
 
+    def last_checked(self):
+        return ServerCheck.objects.filter(server=self).latest('check_date').check_date
+
     def bar_type(self):
         time_used = self.percentage_time_used()
         prog_type = 'info'
