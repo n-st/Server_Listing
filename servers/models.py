@@ -139,6 +139,7 @@ class ServerCheck(models.Model):
 
     online = models.BooleanField(default=True)
     did_change = models.BooleanField(default=False)
+    last_change = models.ForeignKey('ServerCheck', null=True, blank=True)
 
     def server_name(self):
         return self.server.name
@@ -172,4 +173,18 @@ class ServerCheck(models.Model):
         else:
             self.did_change = True
 
+        if ServerCheck.objects.filter(server=self.server, did_change=True, check_date__lt=self.check_date).exists():
+            self.last_change = ServerCheck.objects.filter(
+                server=self.server,
+                did_change=True,
+                check_date__lt=self.check_date
+            ).latest('check_date')
+
         return super(ServerCheck, self).save(force_insert, force_update, using, update_fields)
+
+    def __unicode__(self):
+        if self.online:
+            online_text = 'Online'
+        else:
+            online_text = 'Offline'
+        return online_text + ' ' + unicode(self.check_date)
