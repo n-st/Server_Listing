@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from servers.models import Server
 from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponse
 
 
 @login_required
@@ -17,3 +18,7 @@ def view_server(request, server_id):
     return render(request, 'servers/server.html', {
         "server": server
     })
+
+
+def ping_check(request):
+    return HttpResponse("ping response")
