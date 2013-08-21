@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 
-{% block page_title %}Server Details <small>{{ server.name }}</small>{% endblock %}
+{% block page_title %}
+  Server Details
+  <small>
+    {{ server.name }}
+    {% if server.is_up %}
+      <span class="label label-success">Server Online!</span>
+    {% else %}
+      <span class="label label-danger">Server Offline!</span>
+    {% endif %}
+  </small>
+{% endblock %}
 
 {% block content %}
 

@@ -92,6 +92,12 @@ class Server(models.Model):
             return ((seconds_per_month - difference.total_seconds())/seconds_per_month) * 100.0
         return ((seconds_per_year - difference.total_seconds())/seconds_per_year) * 100.0
 
+    def is_up(self):
+        if self.check_status is False:
+            return False
+        if ServerCheck.objects.filter(server=self).exists():
+            return ServerCheck.objects.filter(server=self).latest('check_date').online
+
     def bar_type(self):
         time_used = self.percentage_time_used()
         prog_type = 'info'
