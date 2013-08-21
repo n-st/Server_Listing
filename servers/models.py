@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from datetime import timedelta
 from ping import Ping
+from django.conf import settings
 
 
 class Server(models.Model):
@@ -122,7 +123,7 @@ class ServerCheck(models.Model):
     def check_server(cls, server):
 
         # Check if there was another in the leeway time
-        minimum_time = timezone.now()-timedelta(minutes=5)
+        minimum_time = timezone.now()-timedelta(minutes=settings.LEEWAY_TIME)
         if ServerCheck.objects.filter(server=server, check_date__gte=minimum_time).count() > 0:
             return False
 
@@ -132,4 +133,3 @@ class ServerCheck(models.Model):
 
         check_log.save()
         return check_log
-

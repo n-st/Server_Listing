@@ -158,4 +158,6 @@ LOGGING = {
     }
 }
 
+LEEWAY_TIME = 5
+
 from local_settings import *
