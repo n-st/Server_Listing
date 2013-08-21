@@ -48,6 +48,43 @@
     </table>
   </div>
 
+  <div class="panel panel-default">
+    <div class="panel-heading"><span class="text-info">{{ server.name }}</span> specification</div>
+    <table class="table">
+
+      <tr>
+        <td><strong>Number of cores</strong></td>
+        <td>{{ server.number_cores }}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Bandwidth</strong></td>
+        <td>{{ server.bandwidth }} GB</td>
+      </tr>
+
+      <tr>
+        <td><strong>Ram total</strong></td>
+        <td>{{ server.ram }} MB</td>
+      </tr>
+
+      <tr>
+        <td><strong>Burstable RAM</strong></td>
+        <td>{{ server.burst }} MB</td>
+      </tr>
+
+      <tr>
+        <td><strong>HDD Capacity</strong></td>
+        <td>{{ server.hdd_space }}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Virtualisation Type</strong></td>
+        <td>{{ server.get_virt_type_display }}</td>
+      </tr>
+
+    </table>
+  </div>
+
   {% if server.has_notes %}
     <div class="panel panel-default">
       <div class="panel-heading">
