@@ -14,11 +14,27 @@ class Server(models.Model):
         (YEARLY, 'Yearly'),
     )
 
+    OPENVZ = 'o'
+    KVM = 'k'
+
+    VIRT_TYPES = (
+        (OPENVZ, 'OpenVZ'),
+        (KVM, 'KVM'),
+    )
+
     name = models.CharField(max_length=255)
     notes = models.TextField(default='', blank=True)
 
     cost = models.DecimalField(max_digits=20, decimal_places=2)
     main_ip = models.GenericIPAddressField()
+
+    # Server details
+    number_cores = models.IntegerField(default=1)
+    bandwidth = models.IntegerField(default=0)
+    ram = models.IntegerField(default=0)
+    burst = models.IntegerField(default=0)
+    hdd_space = models.IntegerField(default=0)
+    virt_type = models.CharField(max_length=1, choices=VIRT_TYPES, default=OPENVZ)
 
     billing_type = models.CharField(max_length=1, choices=BILLING_CHOICES, default=MONTHLY)
     purchased_at = models.DateField(default=timezone.now)
