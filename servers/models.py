@@ -140,3 +140,16 @@ class ServerCheck(models.Model):
 
         check_log.save()
         return check_log
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+
+        if ServerCheck.objects.filter(server=self).exists():
+            if self.online == ServerCheck.objects.filter(server=self).latest('check_date').online:
+                self.did_change = False
+            else:
+                self.did_change = True
+        else:
+            self.did_change = True
+
+        return super(ServerCheck, self).save(force_insert, force_update, using, update_fields)
