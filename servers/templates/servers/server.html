@@ -56,20 +56,26 @@
         <td><strong>Purchased on</strong></td>
         <td>{{ server.purchased_at }}</td>
       </tr>
-      {% if server.check_status %}
-      <tr>
-        <td><strong>{% if server.is_up %}Online{% else %}Offline{% endif %} time</strong></td>
-        <td>{{ server.time_since_last_change | timesince }}</td>
-      </tr>
-
-      <tr>
-        <td><strong>Last checked</strong></td>
-        <td>{{ server.last_checked }} ({{ server.last_checked | timesince }} ago)</td>
-      </tr>
-      {% endif %}
 
     </table>
   </div>
+
+  {% if server.check_status %}
+    <div class="panel panel-{% if server.is_up %}success{% else %}danger{% endif %}">
+      <div class="panel-heading"><h3 class="panel-title">Uptime details</h3></div>
+      <table class="table">
+        <tr>
+          <td><strong>{% if server.is_up %}Online{% else %}Offline{% endif %} time</strong></td>
+          <td>{{ server.time_since_last_change | timesince }}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Last checked</strong></td>
+          <td>{{ server.last_checked }} ({{ server.last_checked | timesince }} ago)</td>
+        </tr>
+      </table>
+    </div>
+  {% endif %}
 
   <div class="panel panel-default">
     <div class="panel-heading"><span class="text-info">{{ server.name }}</span> specification</div>
