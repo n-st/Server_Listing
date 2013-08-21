@@ -1,5 +1,5 @@
 from django.contrib import admin
-from servers.models import Server, Extra_IP
+from servers.models import Server, Extra_IP, ServerCheck
 
 
 class IPInline(admin.TabularInline):
@@ -17,4 +17,8 @@ class ServerAdmin(admin.ModelAdmin):
     ]
 
 
+class ServerCheckAdmin(admin.ModelAdmin):
+    list_display = ('server_name', 'online', 'did_change')
+
 admin.site.register(Server, ServerAdmin)
+admin.site.register(ServerCheck, ServerCheckAdmin)

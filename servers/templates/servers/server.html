@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 
-{% block page_title %}Server Details <small>{{ server.name }}</small>{% endblock %}
+{% block page_title %}
+  Server Details
+  <small>
+    {{ server.name }}
+    {% if server.check_status %}
+      {% if server.is_up %}
+        <span class="label label-success">Server Online!</span>
+      {% else %}
+        <span class="label label-danger">Server Offline!</span>
+      {% endif %}
+    {% endif %}
+  </small>
+{% endblock %}
 
 {% block content %}
 
@@ -44,6 +56,12 @@
         <td><strong>Purchased on</strong></td>
         <td>{{ server.purchased_at }}</td>
       </tr>
+      {% if server.check_status %}
+      <tr>
+        <td><strong>{% if server.is_up %}Online{% else %}Offline{% endif %} time</strong></td>
+        <td>{{ server.time_since_last_change | timesince }}</td>
+      </tr>
+      {% endif %}
 
     </table>
   </div>
@@ -98,7 +116,9 @@
 
   {% if server.total_ip_count != 0 %}
   <div class="panel panel-default">
-    <div class="panel-heading">Other IP Addresses</div>
+    <div class="panel-heading">
+      <h3 class="panel-title">Other IP Addresses</h3>
+    </div>
 
     <ul class="list-group">
       {% for ip in server.extra_ip_set.all %}
@@ -108,9 +128,43 @@
   </div>
   {% endif %}
 
+  {% if server.has_uptime_history %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Uptime history</h3>
+    </div>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>IP Checked</th>
+          <th>Uptime / Downtime</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      {% for uptime_log in server.uptime_history %}
+      <tr class="{% if uptime_log.online %}success{% else %}danger{% endif %}">
+        <td>{{ uptime_log.check_date }}</td>
+        <td>{{ uptime_log.ip_address }}</td>
+        <td>{{ uptime_log.abstracted_time_relative_to_now | timesince }}</td>
+        <td>
+          {% if uptime_log.online %}
+            <span class="label label-success">Online</span>
+          {% else %}
+            <span class="label label-danger">Offline</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  {% endif %}
+
   <div class="btn-group btn-group-justified">
     <a class="btn btn-success" href="{% url 'admin:servers_server_add' %}">Create New</a>
     <a class="btn btn-primary" href="{% url 'admin:servers_server_change' server.pk %}">Edit</a>
     <a class="btn btn-danger" href="{% url 'admin:servers_server_delete' server.pk %}">Delete</a>
   </div>
+  <br />
 {% endblock %}

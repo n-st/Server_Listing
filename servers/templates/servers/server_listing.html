@@ -12,6 +12,7 @@
         <th>Main IP</th>
         <th>Purchased At</th>
         <th>Time left</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>
@@ -23,6 +24,17 @@
         <td>{{ server.main_ip }}</td>
         <td>{{ server.purchased_at }}</td>
         <td>{% include 'servers/progress_bar.html' with percentage=server.percentage_time_used type=server.bar_type %}</td>
+        <td>
+          {% if server.check_status %}
+            {% if server.is_up %}
+              <span class="label label-success">Online</span>
+            {% else %}
+              <span class="label label-danger">Offline</span>
+            {% endif %}
+          {% else %}
+            <span class="label label-info">Not Checking</span>
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
     </tbody>
