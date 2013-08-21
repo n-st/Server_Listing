@@ -97,6 +97,14 @@ class Server(models.Model):
             return False
         if ServerCheck.objects.filter(server=self).exists():
             return ServerCheck.objects.filter(server=self).latest('check_date').online
+        return False
+
+    def time_since_last_change(self):
+        if self.check_status is False:
+            return False
+        if ServerCheck.objects.filter(server=self).exists():
+            return ServerCheck.objects.filter(server=self, did_change=True).latest('check_date').check_date
+        return timezone.now()
 
     def bar_type(self):
         time_used = self.percentage_time_used()

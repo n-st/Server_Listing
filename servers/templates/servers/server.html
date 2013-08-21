@@ -55,6 +55,11 @@
         <td>{{ server.purchased_at }}</td>
       </tr>
 
+      <tr>
+        <td><strong>{% if server.is_up %}Online{% else %}Offline{% endif %} time</strong></td>
+        <td>{{ server.time_since_last_change | timesince }}</td>
+      </tr>
+
     </table>
   </div>
 
