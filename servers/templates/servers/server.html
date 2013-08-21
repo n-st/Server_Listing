@@ -134,18 +134,20 @@
       <h3 class="panel-title">Uptime history</h3>
     </div>
 
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th>Time</th>
           <th>IP Checked</th>
+          <th>Uptime / Downtime</th>
           <th>Status</th>
         </tr>
       </thead>
       {% for uptime_log in server.uptime_history %}
-      <tr>
+      <tr class="{% if uptime_log.online %}success{% else %}danger{% endif %}">
         <td>{{ uptime_log.check_date }}</td>
         <td>{{ uptime_log.ip_address }}</td>
+        <td>{{ uptime_log.abstracted_time_relative_to_now | timesince }}</td>
         <td>
           {% if uptime_log.online %}
             <span class="label label-success">Online</span>

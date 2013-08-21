@@ -188,3 +188,17 @@ class ServerCheck(models.Model):
         else:
             online_text = 'Offline'
         return online_text + ' ' + unicode(self.check_date)
+
+    def abstracted_time_relative_to_now(self):
+        checks = ServerCheck.objects.filter(
+            server=self.server,
+            did_change=True,
+            check_date__gt=self.check_date
+        ).order_by('check_date')
+        if checks.exists():
+            next_check = checks[0]
+            delta_time = next_check.check_date - self.check_date
+            return timezone.now() - delta_time
+        else:
+            return self.check_date
+
