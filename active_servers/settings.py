@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'south',
     # Custom apps
     'servers',
+    'quick_auth',
 )
 
 # A sample logging configuration. The only tangible logging
