@@ -1,6 +1,9 @@
 # Django settings for active_servers project.
 import os
 
+import djcelery
+djcelery.setup_loader()
+
 BASE_DIR = os.path.join(os.path.dirname(__file__), '..')
 
 DEBUG = True
@@ -125,6 +128,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Packages
     'south',
+    'djcelery',
     # Custom apps
     'servers',
 )
