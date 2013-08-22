@@ -5,6 +5,14 @@ import djcelery
 djcelery.setup_loader()
 BROKER_URL = "amqp://guest:guest@localhost:5672//"
 
+from datetime import timedelta
+CELERYBEAT_SCHEDULE = {
+    'ping-all-servers': {
+        'task': 'servers.ping',
+        'schedule': timedelta(seconds=60),
+    }
+}
+
 BASE_DIR = os.path.join(os.path.dirname(__file__), '..')
 
 DEBUG = True
@@ -163,6 +171,6 @@ LOGGING = {
     }
 }
 
-LEEWAY_TIME = 5
+LEEWAY_TIME = 1
 
 from local_settings import *
