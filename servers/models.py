@@ -6,6 +6,18 @@ from ping import Ping
 from django.conf import settings
 
 
+class Purpose(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(default='', blank=True)
+    purpose_website = models.URLField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Server(models.Model):
 
     MONTHLY = 'm'
@@ -26,6 +38,7 @@ class Server(models.Model):
 
     name = models.CharField(max_length=255)
     notes = models.TextField(default='', blank=True)
+    purposes = models.ManyToManyField(Purpose)
 
     cost = models.DecimalField(max_digits=20, decimal_places=2)
     main_ip = models.GenericIPAddressField()
