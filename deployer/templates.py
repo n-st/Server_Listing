@@ -1,5 +1,4 @@
-LOCAL_SETTINGS = """
-DATABASES = {{
+LOCAL_SETTINGS = """DATABASES = {{
     'default': {{
         'ENGINE': 'django.db.backends.{type}',
         'NAME': '{name}',
@@ -16,7 +15,11 @@ ALLOWED_HOSTS = ['{site_name}']
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+
+{additional_settings}
 """
+
+ADDITIONAL_SETTINGS_FORMAT = "{setting_name} = {setting_value}\n"
 
 GUNICORN_START = """#!/bin/bash
 

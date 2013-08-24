@@ -25,7 +25,7 @@
         "email_host": "localhost",
         "email_user": "username",
         "email_pass": "password",
-        "email_from": "from@example.com",
+        "default_from_email": "from@example.com",
         "email_port": 25,
         "email_use_tls": false
     },
