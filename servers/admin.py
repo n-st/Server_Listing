@@ -10,6 +10,7 @@ class ServerAdmin(admin.ModelAdmin):
     list_filter = ('name', 'created_at')
     list_display = ('name', 'cost', 'main_ip', 'purchased_at')
     search_fields = ['name']
+    filter_horizontal = ('purposes',)
 
     date_hierarchy = 'purchased_at'
     inlines = [
