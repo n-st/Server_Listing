@@ -16,6 +16,8 @@ ALLOWED_HOSTS = ['{site_name}']
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 ADMINS = (
 {admins}
 )
