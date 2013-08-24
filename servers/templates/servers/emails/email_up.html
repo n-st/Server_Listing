@@ -8,4 +8,4 @@ The ping initially failed for the IP at {{ server_log.last_change.ip_address }} 
 
 The success log is:
 
-{{ ping.out }}
+{% include 'servers/emails/email_log.html' %}
