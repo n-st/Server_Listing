@@ -38,7 +38,7 @@ class Server(models.Model):
 
     name = models.CharField(max_length=255)
     notes = models.TextField(default='', blank=True)
-    purposes = models.ManyToManyField(Purpose)
+    purposes = models.ManyToManyField(Purpose, blank=True, null=True)
 
     cost = models.DecimalField(max_digits=20, decimal_places=2)
     main_ip = models.GenericIPAddressField()
