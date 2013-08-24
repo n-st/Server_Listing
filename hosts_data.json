@@ -23,8 +23,8 @@
 
     "other_settings": {
         "email_host": "localhost",
-        "email_user": "username",
-        "email_pass": "password",
+        "email_host_user": "username",
+        "email_host_password": "password",
         "default_from_email": "from@example.com",
         "email_port": 25,
         "email_use_tls": false
