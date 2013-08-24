@@ -1,4 +1,5 @@
 from subprocess import Popen, PIPE
+from servers.emailers import send_email
 
 
 class Ping(object):
