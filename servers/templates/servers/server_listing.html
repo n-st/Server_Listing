@@ -8,6 +8,7 @@
       <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Purpose</th>
         <th>Cost</th>
         <th>Main IP</th>
         <th>Purchased At</th>
@@ -20,6 +21,15 @@
       <tr>
         <td>{{ server.pk }}</td>
         <td><a href="{% url 'servers.views.view_server' server.pk %}">{{ server.name }}</a></td>
+        <td>
+          {% if server.has_purpose %}
+            {% for purpose in server.purposes.all %}
+              <span class="label label-info">{{ purpose.name }}</span>
+            {% endfor %}
+          {% else %}
+            Not currently used for anything.
+          {% endif %}
+        </td>
         <td>${{ server.cost }}</td>
         <td>{{ server.main_ip }}</td>
         <td>{{ server.purchased_at }}</td>
