@@ -19,5 +19,19 @@
         "deploy_gunicorn_socket": "gunicorn.sock",
         "deploy_gunicorn_starter": "gunicorn_start",
         "deploy_virtualenv_dir": "env"
+    },
+
+    "other_settings": {
+        "email_host": "localhost",
+        "email_user": "username",
+        "email_pass": "password",
+        "email_from": "from@example.com",
+        "email_port": 25,
+        "email_use_tls": false
+    },
+
+    "admins":{
+        "Admin Name": "email@example.com",
+        "Bdmin Name": "tests@example.com"
     }
 }
