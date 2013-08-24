@@ -1,5 +1,5 @@
 from django.contrib import admin
-from servers.models import Server, Extra_IP, ServerCheck
+from servers.models import Server, Extra_IP, ServerCheck, Purpose
 
 
 class IPInline(admin.TabularInline):
@@ -22,3 +22,4 @@ class ServerCheckAdmin(admin.ModelAdmin):
 
 admin.site.register(Server, ServerAdmin)
 admin.site.register(ServerCheck, ServerCheckAdmin)
+admin.site.register(Purpose)
