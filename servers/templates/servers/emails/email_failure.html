@@ -1,6 +1,7 @@
-The ping has failed for the IP at {{ ping.hostname }}!
+Server {{ server.name }} is now down. The ping exited with status code {{ ping.status_code }}.
+Full output of the error can be seen below.
 
-The status code for the ping was {{ ping.status_code }}.
+The ping has failed for the IP at {{ ping.hostname }} with the date {{ server_log.check_date }}!
 
 The error log was:
 

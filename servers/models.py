@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from datetime import timedelta
 from ping import Ping
 from django.conf import settings
+from servers.emailers import send_failure, send_back_up
 
 
 class Purpose(models.Model):
@@ -178,6 +179,11 @@ class ServerCheck(models.Model):
         check_log.online = checker.is_online
 
         check_log.save()
+        if check_log.did_change:
+            if checker.is_online:
+                send_back_up(checker, check_log)
+            else:
+                send_failure(checker, check_log)
         return check_log
 
     def save(self, force_insert=False, force_update=False, using=None,

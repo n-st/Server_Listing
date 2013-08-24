@@ -1,0 +1,11 @@
+Server {{ server.name }} was down but is back up.
+
+The ping exited with status code {{ ping.status_code }}.
+Full output of the point when the server came back up can be seen below.
+
+The ping initially failed for the IP at {{ server_log.last_change.ip_address }} with the date
+{{ server_log.last_change.check_date }}!
+
+The success log is:
+
+{{ ping.out }}

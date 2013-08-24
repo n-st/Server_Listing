@@ -28,7 +28,6 @@ class Ping(object):
             self.is_online = True
         else:
             self.is_online = False
-            send_failure(self)
 
         return self
 
