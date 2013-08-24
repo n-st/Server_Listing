@@ -4,7 +4,8 @@ from deployer.templates import (
     GUNICORN_START,
     GUNICORN_SUPERVISOR,
     NGINX_CONFG,
-    ADDITIONAL_SETTINGS_FORMAT
+    ADDITIONAL_SETTINGS_FORMAT,
+    ADMIN_SETTINGS_FORMAT
 )
 
 
@@ -80,6 +81,15 @@ class Configuration(object):
                 setting_name=setting.upper(),
                 setting_value=setting_value
             )
+        additional_settings = additional_settings.strip('\n')
+
+        admins = ""
+        for admin in self.data["admins"]:
+            admins += ADMIN_SETTINGS_FORMAT.format(
+                admin_name=admin,
+                admin_email=self.data["admins"][admin]
+            )
+        admins = admins.strip('\n')
 
         return LOCAL_SETTINGS.format(
             name=self.data["database"]["name"],
@@ -89,6 +99,7 @@ class Configuration(object):
             type=self.database_type(),
             site_name=self.site_name(),
             additional_settings=additional_settings,
+            admins=admins
         )
 
     def local_settings_path(self):
