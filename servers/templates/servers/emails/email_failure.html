@@ -1,8 +1,29 @@
-Server {{ server.name }} is now down. The ping exited with status code {{ ping.status_code }}.
-Full output of the error can be seen below.
+<html>
+  <head>
+    <title>Awesome Email Marketing!</title>
+  </head>
+  <body>
+    <h1 style="font-family: Arial, serif">
+      Server
+    <span style="color: red">{{ server.name }}</span>
+      is now down.
+    </h1>
 
-The ping has failed for the IP at {{ ping.hostname }} with the date {{ server_log.check_date }}!
+    The ping exited with status code {{ ping.status_code }}.
+    Full output of the error can be seen below.
+    <br /><br />
+    The ping has failed for the IP at {{ ping.hostname }} with the date {{ server_log.check_date }}!
+    <br /><br />
+    The error log was:
 
-The error log was:
-
-{{ ping.out }}
+    <span style="
+      background-color: #dfe7e5;
+      display: block;
+      padding: 10px;
+      border: solid 1px #9da3a1;
+      margin-top: 10px;
+    ">
+    {{ ping.out }}
+    </span>
+  </body>
+</html>

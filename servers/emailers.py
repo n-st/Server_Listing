@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 
 
@@ -9,7 +9,9 @@ def send_email(subject, message, to=None):
     if to is None:
         to = [settings.ADMINS[0][1], ]
 
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, to)
+    msg = EmailMessage(subject=subject, body=message, from_email=settings.DEFAULT_FROM_EMAIL, to=to)
+    msg.content_subtype = "html"
+    msg.send()
 
 
 def send_failure(ping_object, server_log):
