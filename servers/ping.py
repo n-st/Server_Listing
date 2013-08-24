@@ -1,5 +1,5 @@
 from subprocess import Popen, PIPE
-from servers.emailers import send_email
+from servers.emailers import send_failure
 
 
 class Ping(object):
@@ -16,15 +16,19 @@ class Ping(object):
             return
 
         ping_response = Popen("ping -c 1 " + self.hostname, stdout=PIPE, stderr=PIPE, shell=True)
-        ping_response.wait()
+        out, error = ping_response.communicate()
 
         self.status_code = ping_response.returncode
+        self.out = out
+        self.error = error
+
+        self.has_checked = True
 
         if self.status_code == 0:
             self.is_online = True
         else:
             self.is_online = False
-        self.has_checked = True
+            send_failure(self)
 
         return self
 
