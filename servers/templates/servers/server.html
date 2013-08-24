@@ -22,6 +22,7 @@
     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
     <li><a href="#specification" data-toggle="tab">Specification</a></li>
     {% if server.check_status %}<li><a href="#uptime" data-toggle="tab">Uptime</a></li>{% endif %}
+    {% if server.has_purpose %}<li><a href="#purpose" data-toggle="tab">Purposes</a></li>{% endif %}
   </ul>
 
   <br />
@@ -183,6 +184,13 @@
         </table>
       </div>
       {% endif %}
+    </div>
+    {% endif %}
+    {% if server.has_purpose %}
+    <div class="tab-pane" id="purpose">
+      {% for purpose in server.purposes.all %}
+          {% include 'servers/purpose.html' with purpose=purpose %}
+      {% endfor %}
     </div>
     {% endif %}
   </div>

@@ -139,6 +139,11 @@ class Server(models.Model):
             prog_type = 'danger'
         return prog_type
 
+    def has_purpose(self):
+        if self.purposes.count() > 0:
+            return True
+        return False
+
 
 class Extra_IP(models.Model):
     server = models.ForeignKey(Server)
