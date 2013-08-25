@@ -79,3 +79,8 @@ class SolusAPI(object):
         if self.perform_request():
             return self.document["hostname"]
         return False
+
+    def get_main_ip(self):
+        if self.perform_request():
+            return self.document["ipaddress"]
+        return False
