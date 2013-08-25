@@ -265,11 +265,28 @@ class SolusAPI(models.Model):
         document = parse("<doc>" + response_data + "</doc>")
 
         document = document["doc"]
+        self.document = None
 
-        self.status = document["status"]
-
-        if self.status == "success":
-            print document
+        if "status" in document:
+            self.success = True
+            self.document = document
             return True
         else:
+            self.success = False
             return False
+
+    def update_ip_list(self):
+        self.get_all_data()
+
+        if self.success:
+            ips = self.document["ipaddr"].split(",")
+            current_ip_list = [self.server.main_ip]
+            for ip in self.server.extra_ip_set.all():
+                current_ip_list.append(ip.ip)
+
+            for ip in ips:
+                if ip in current_ip_list:
+                    continue
+                else:
+                    Extra_IP(ip=ip, server=self.server).save()
+        return self.success
