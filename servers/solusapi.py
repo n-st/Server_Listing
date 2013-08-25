@@ -74,3 +74,8 @@ class SolusAPI(object):
             return "offline"
         else:
             return False
+
+    def get_hostname(self):
+        if self.perform_request():
+            return self.document["hostname"]
+        return False
