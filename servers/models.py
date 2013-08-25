@@ -229,3 +229,8 @@ class ServerCheck(models.Model):
         else:
             return self.check_date
 
+
+class SolusAPI(models.Model):
+    api_url = models.URLField()
+    api_key = models.CharField(max_length=255)
+    api_hash = models.CharField(max_length=255)
