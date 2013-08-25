@@ -68,6 +68,8 @@ class Server(models.Model):
 
     check_status = models.BooleanField(default=True)
 
+    solus_api = models.OneToOneField(SolusAPI, blank=True, null=True)
+
     def __unicode__(self):
         return self.name
 
