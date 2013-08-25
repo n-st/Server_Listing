@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from servers.models import Server, ServerCheck
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
-from ping import Ping
+import json
 
 
 @login_required
@@ -27,3 +27,30 @@ def ping_check(request):
         ServerCheck.check_server(server)
 
     return HttpResponse("")
+
+
+@login_required()
+def update_server(request):
+    response_data = {
+        "success": True,
+    }
+    if request.method == "POST":
+        if request.is_ajax():
+            server = get_object_or_404(Server, pk=request.POST["server"])
+            if server.solusapi is None:
+                response_data = {"success": False}
+            else:
+                if request.POST["attribute"] == 'spec-bandwidth':
+                    pass
+                elif request.POST["attribute"] == 'spec-ram':
+                    pass
+                elif request.POST["attribute"] == 'spec-hdd':
+                    pass
+                else:
+                    response_data = {"success": False}
+        else:
+            response_data = {"success": False}
+    else:
+        response_data = {"success": False}
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
