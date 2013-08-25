@@ -8,6 +8,9 @@
     <span style="color: limegreen">{{ server.name }}</span>
       was down but is back up.
     </h1>
+    <h3 style="font-family: Arial, serif; color: #ff4f43">
+      Total downtime: {{ server_log.abstracted_time_relative_to_now | timesince }}
+    </h3>
 
     The ping exited with status code {{ ping.status_code }}.<br />
     Full output of the point when the server came back up can be seen below.
