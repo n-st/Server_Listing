@@ -5,10 +5,7 @@ from datetime import timedelta
 from ping import Ping
 from django.conf import settings
 from servers.emailers import send_failure, send_back_up
-import urllib2
-import urllib
-from xmltodict import parse
-from servers.solusapi import SolusAPI
+from servers.solusapi import SolusAPI as SolusConnectorAPI
 
 
 class Purpose(models.Model):
@@ -242,7 +239,7 @@ class SolusAPI(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def update_ip_list(self):
-        api = SolusAPI(
+        api = SolusConnectorAPI(
             url=self.api_url,
             api_key=self.api_key,
             api_hash=self.api_hash
