@@ -101,6 +101,23 @@ class SolusAPI(object):
                 "total": total,
                 "used": used,
                 "free": free,
-                "percent": percent_used
+                "percent": float(percent_used)
+            }
+        return False
+
+    def get_memory(self, output_format=MEGABYTES):
+        if self.perform_request(mem='true'):
+            hdd = self.document["mem"]
+            total, used, free, percent_used = hdd.split(',')
+
+            total = float(total) / output_format
+            used = float(used) / output_format
+            free = float(free) / output_format
+
+            return {
+                "total": total,
+                "used": used,
+                "free": free,
+                "percent": float(percent_used)
             }
         return False
