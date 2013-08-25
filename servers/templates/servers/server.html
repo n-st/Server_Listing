@@ -91,7 +91,7 @@
             <h3 class="panel-title">Notes</h3>
           </div>
           <div class="panel-body">
-            {{ server.html_notes|safe }}
+            {{ server.notes | linebreaks }}
           </div>
         </div>
       {% endif %}

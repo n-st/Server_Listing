@@ -76,9 +76,6 @@ class Server(models.Model):
             return False
         return True
 
-    def html_notes(self):
-        return '<br />'.join(self.notes.split('\n'))
-
     def next_due_date(self):
         if self.billing_type == self.MONTHLY:
             test_time = timezone.now().date().replace(day=self.purchased_at.day)
