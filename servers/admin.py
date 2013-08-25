@@ -1,9 +1,13 @@
 from django.contrib import admin
-from servers.models import Server, Extra_IP, ServerCheck, Purpose
+from servers.models import Server, Extra_IP, ServerCheck, Purpose, SolusAPI
 
 
 class IPInline(admin.TabularInline):
     model = Extra_IP
+
+
+class SolusInline(admin.StackedInline):
+    model = SolusAPI
 
 
 class ServerAdmin(admin.ModelAdmin):
@@ -14,6 +18,7 @@ class ServerAdmin(admin.ModelAdmin):
 
     date_hierarchy = 'purchased_at'
     inlines = [
+        SolusInline,
         IPInline
     ]
 
@@ -24,3 +29,4 @@ class ServerCheckAdmin(admin.ModelAdmin):
 admin.site.register(Server, ServerAdmin)
 admin.site.register(ServerCheck, ServerCheckAdmin)
 admin.site.register(Purpose)
+admin.site.register(SolusAPI)
