@@ -7,6 +7,7 @@ from django.conf import settings
 from servers.emailers import send_failure, send_back_up
 import urllib2
 import urllib
+from xmltodict import parse
 
 
 class Purpose(models.Model):
@@ -251,11 +252,24 @@ class SolusAPI(models.Model):
             "key": self.api_key,
             "hash": self.api_hash,
             "action": "info",
+            "ipaddr": 'true',
+            "hdd": 'true',
+            "mem": 'true',
+            "bw": 'true',
         })
         request = urllib2.Request(self.api_full_url(), request_data)
         request.add_header('User-agent', 'Mozilla/5.0')
-        print self.api_full_url()
         response = urllib2.urlopen(request)
         response_data = response.read()
 
-        print response_data
+        document = parse("<doc>" + response_data + "</doc>")
+
+        document = document["doc"]
+
+        self.status = document["status"]
+
+        if self.status == "success":
+            print document
+            return True
+        else:
+            return False
