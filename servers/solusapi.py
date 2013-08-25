@@ -35,7 +35,13 @@ class SolusAPI(object):
         request_data = urllib.urlencode(params)
         request = urllib2.Request(self.api_url, request_data)
         request.add_header('User-agent', 'Mozilla/5.0')
-        response = urllib2.urlopen(request)
+
+        try:
+            response = urllib2.urlopen(request)
+        except urllib2.URLError:
+            self.error = "Incorrect URL"
+            self.success = False
+            return False
         response_data = response.read()
 
         document = parse("<doc>" + response_data + "</doc>")
