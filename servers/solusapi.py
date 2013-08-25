@@ -13,6 +13,9 @@ class SolusAPI(object):
     success = False
     error = None
 
+    GIGABYTES = 1073741824.0
+    MEGABYTES = 1048576.0
+
     def __init__(self, url, api_key, api_hash):
         self.api_key = api_key
         self.api_hash = api_hash
@@ -83,4 +86,21 @@ class SolusAPI(object):
     def get_main_ip(self):
         if self.perform_request():
             return self.document["ipaddress"]
+        return False
+
+    def get_hdd(self, output_format=GIGABYTES):
+        if self.perform_request(hdd='true'):
+            hdd = self.document["hdd"]
+            total, used, free, percent_used = hdd.split(',')
+
+            total = float(total) / output_format
+            used = float(used) / output_format
+            free = float(free) / output_format
+
+            return {
+                "total": total,
+                "used": used,
+                "free": free,
+                "percent": percent_used
+            }
         return False
