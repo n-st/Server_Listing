@@ -24,11 +24,15 @@ class SolusAPI(object):
         self.api_url = url
 
     def perform_request(self, **kwargs):
-        request_data = urllib.urlencode({
-            "key": self.api_key,
-            "hash": self.api_hash,
-            "action": "info",
-        }.update(kwargs))
+
+        params = dict(
+            {
+                "key": self.api_key,
+                "hash": self.api_hash,
+                "action": "info",
+            }.items() + kwargs.items()
+        )
+        request_data = urllib.urlencode(params)
         request = urllib2.Request(self.api_url, request_data)
         request.add_header('User-agent', 'Mozilla/5.0')
         response = urllib2.urlopen(request)
@@ -47,4 +51,10 @@ class SolusAPI(object):
                 return True
             else:
                 self.error = document["statusmsg"]
+        else:
+            self.error = 'Incorrect data format'
         return False
+
+    def get_ips(self):
+        if self.perform_request(ipaddr='true'):
+            print self.document["ipaddr"]
