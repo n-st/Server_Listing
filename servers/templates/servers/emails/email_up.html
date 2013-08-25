@@ -9,7 +9,7 @@
       was down but is back up.
     </h1>
     <h3 style="font-family: Arial, serif; color: #ff4f43">
-      Total downtime: {{ server_log.abstracted_time_relative_to_now | timesince }}
+      Total downtime: {{ server_log.last_change.abstracted_time_relative_to_now | timesince }}
     </h3>
 
     The ping exited with status code {{ ping.status_code }}.<br />
