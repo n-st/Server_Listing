@@ -66,3 +66,11 @@ class SolusAPI(object):
             return self.document["ipaddr"].split(',')
         else:
             return False
+
+    def get_status(self):
+        if self.perform_request(action='status'):
+            if self.document["vmstat"] == "online":
+                return "online"
+            return "offline"
+        else:
+            return False
