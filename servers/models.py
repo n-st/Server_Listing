@@ -8,6 +8,7 @@ from servers.emailers import send_failure, send_back_up
 import urllib2
 import urllib
 from xmltodict import parse
+from servers.solusapi import SolusAPI
 
 
 class Purpose(models.Model):
@@ -240,46 +241,15 @@ class SolusAPI(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def api_full_url(self):
-        full_url = self.api_url
-        if not full_url.endswith('/'):
-            full_url += '/'
-        full_url += 'api/client/command.php'
-        return full_url
-
-    def get_all_data(self):
-        request_data = urllib.urlencode({
-            "key": self.api_key,
-            "hash": self.api_hash,
-            "action": "info",
-            "ipaddr": 'true',
-            "hdd": 'true',
-            "mem": 'true',
-            "bw": 'true',
-        })
-        request = urllib2.Request(self.api_full_url(), request_data)
-        request.add_header('User-agent', 'Mozilla/5.0')
-        response = urllib2.urlopen(request)
-        response_data = response.read()
-
-        document = parse("<doc>" + response_data + "</doc>")
-
-        document = document["doc"]
-        self.document = None
-
-        if "status" in document:
-            self.success = True
-            self.document = document
-            return True
-        else:
-            self.success = False
-            return False
-
     def update_ip_list(self):
-        self.get_all_data()
+        api = SolusAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
 
-        if self.success:
-            ips = self.document["ipaddr"].split(",")
+        ips = api.get_ips()
+        if ips:
             current_ip_list = [self.server.main_ip]
             for ip in self.server.extra_ip_set.all():
                 current_ip_list.append(ip.ip)
@@ -289,4 +259,5 @@ class SolusAPI(models.Model):
                     continue
                 else:
                     Extra_IP(ip=ip, server=self.server).save()
-        return self.success
+            return True
+        return False
