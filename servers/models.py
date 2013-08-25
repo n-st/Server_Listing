@@ -19,15 +19,6 @@ class Purpose(models.Model):
         return self.name
 
 
-class SolusAPI(models.Model):
-    api_url = models.URLField()
-    api_key = models.CharField(max_length=255)
-    api_hash = models.CharField(max_length=255)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
 class Server(models.Model):
 
     MONTHLY = 'm'
@@ -68,7 +59,6 @@ class Server(models.Model):
 
     check_status = models.BooleanField(default=True)
 
-    solus_api = models.OneToOneField(SolusAPI, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -236,3 +226,13 @@ class ServerCheck(models.Model):
             return timezone.now() - delta_time
         else:
             return self.check_date
+
+
+class SolusAPI(models.Model):
+    api_url = models.URLField()
+    api_key = models.CharField(max_length=255)
+    api_hash = models.CharField(max_length=255)
+    server = models.OneToOneField(Server)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
