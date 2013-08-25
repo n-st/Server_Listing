@@ -41,11 +41,23 @@ def update_server(request):
                 response_data = {"success": False}
             else:
                 if request.POST["attribute"] == 'spec-bandwidth':
-                    pass
+                    new_bandwidth = server.solusapi.update_bandwidth()
+                    if new_bandwidth:
+                        response_data["spec-bandwidth"] = new_bandwidth
+                    else:
+                        response_data = {"success": False}
                 elif request.POST["attribute"] == 'spec-ram':
-                    pass
+                    new_ram = server.solusapi.update_ram()
+                    if new_ram:
+                        response_data["spec-ram"] = new_ram
+                    else:
+                        response_data = {"success": False}
                 elif request.POST["attribute"] == 'spec-hdd':
-                    pass
+                    new_hdd = server.solusapi.update_hdd()
+                    if new_hdd:
+                        response_data["spec-hdd"] = new_hdd
+                    else:
+                        response_data = {"success": False}
                 else:
                     response_data = {"success": False}
         else:

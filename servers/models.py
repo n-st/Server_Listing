@@ -258,3 +258,45 @@ class SolusAPI(models.Model):
                     Extra_IP(ip=ip, server=self.server).save()
             return True
         return False
+
+    def update_bandwidth(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+
+        bandwidth = api.get_bandwidth()
+        if bandwidth:
+            self.server.bandwidth = bandwidth["total"]
+            self.server.save()
+            return self.server.bandwidth
+        return False
+
+    def update_ram(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+
+        memory = api.get_memory()
+        if memory:
+            self.server.ram = memory["total"]
+            self.server.save()
+            return self.server.ram
+        return False
+
+    def update_hdd(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+
+        hdd = api.get_hdd()
+        if hdd:
+            self.server.hdd_space = hdd["total"]
+            self.server.save()
+            return self.server.hdd_space
+        return False

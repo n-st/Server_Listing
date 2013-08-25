@@ -216,14 +216,26 @@
 {% block extra_js %}
 <script type="text/javascript">
   function update_spec(spec_name){
+    $("#button-" + spec_name).addClass('disabled');
     var data = {
       server: {{ server.pk }},
       attribute: spec_name,
       csrfmiddlewaretoken: "{{ csrf_token }}"
     };
     $.post("{% url 'servers.views.update_server' %}", data).done(function(data) {
-      alert("Completed");
-    })
+      if (data["success"]){
+        if ('spec-bandwidth' in data){
+          $('#spec-bandwidth').html(data["spec-bandwidth"] + ' GB')
+        } else if ('spec-ram' in data) {
+          $('#spec-ram').html(data["spec-ram"] + ' MB')
+        } else if ('spec-hdd' in data){
+          $('#spec-hdd').html(data["spec-hdd"] + ' GB')
+        }
+        $("#button-" + spec_name).removeClass('disabled');
+      } else {
+        //TODO: handle this
+      }
+    });
   }
 </script>
 {% endblock %}
