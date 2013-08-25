@@ -1,5 +1,6 @@
 from django.contrib import admin
 from servers.models import Server, Extra_IP, ServerCheck, Purpose, SolusAPI
+from django.conf import settings
 
 
 class IPInline(admin.TabularInline):
@@ -27,6 +28,8 @@ class ServerCheckAdmin(admin.ModelAdmin):
     list_display = ('server_name', 'online', 'did_change')
 
 admin.site.register(Server, ServerAdmin)
-admin.site.register(ServerCheck, ServerCheckAdmin)
 admin.site.register(Purpose)
-admin.site.register(SolusAPI)
+
+if settings.DEBUG:
+    admin.site.register(SolusAPI)
+    admin.site.register(ServerCheck, ServerCheckAdmin)
