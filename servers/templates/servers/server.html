@@ -108,13 +108,16 @@
 
           <tr>
             <td><strong>Bandwidth</strong></td>
-            <td id="spec-bandwidth">{{ server.bandwidth }} GB</td>
+            <td>
+              <span id="spec-bandwidth">{{ server.bandwidth }} GB</span>
+              {% include 'servers/ajax_button.html' with attribute='spec-bandwidth' %}
+            </td>
           </tr>
 
           <tr>
             <td><strong>Ram total</strong></td>
-            <td id="spec-ram">
-              {{ server.ram }} MB
+            <td>
+              <span id="spec-ram">{{ server.ram }} MB</span>
               {% include 'servers/ajax_button.html' with attribute='spec-ram' %}
             </td>
           </tr>
@@ -126,7 +129,10 @@
 
           <tr>
             <td><strong>HDD Capacity</strong></td>
-            <td id="spec-hdd">{{ server.hdd_space }}</td>
+            <td>
+              <span id="spec-hdd">{{ server.hdd_space }}</span>
+              {% include 'servers/ajax_button.html' with attribute='spec-hdd' %}
+            </td>
           </tr>
 
           <tr>
