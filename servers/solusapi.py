@@ -63,4 +63,6 @@ class SolusAPI(object):
 
     def get_ips(self):
         if self.perform_request(ipaddr='true'):
-            print self.document["ipaddr"]
+            return self.document["ipaddr"].split(',')
+        else:
+            return False
