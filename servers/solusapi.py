@@ -107,8 +107,8 @@ class SolusAPI(object):
 
     def get_memory(self, output_format=MEGABYTES):
         if self.perform_request(mem='true'):
-            hdd = self.document["mem"]
-            total, used, free, percent_used = hdd.split(',')
+            mem = self.document["mem"]
+            total, used, free, percent_used = mem.split(',')
 
             total = float(total) / output_format
             used = float(used) / output_format
@@ -124,8 +124,8 @@ class SolusAPI(object):
 
     def get_bandwidth(self, output_format=GIGABYTES):
         if self.perform_request(bw='true'):
-            hdd = self.document["bw"]
-            total, used, free, percent_used = hdd.split(',')
+            bw = self.document["bw"]
+            total, used, free, percent_used = bw.split(',')
 
             total = float(total) / output_format
             used = float(used) / output_format
@@ -138,3 +138,54 @@ class SolusAPI(object):
                 "percent": float(percent_used)
             }
         return False
+
+    def get_all(self, output_hdd=GIGABYTES, output_mem=MEGABYTES, output_bw=GIGABYTES):
+        if self.perform_request(bw='true', mem='true', hdd='true'):
+
+            # HDD
+            hdd = self.document["hdd"]
+            total, used, free, percent_used = hdd.split(',')
+
+            total = float(total) / output_hdd
+            used = float(used) / output_hdd
+            free = float(free) / output_hdd
+
+            self.hdd = {
+                "total": total,
+                "used": used,
+                "free": free,
+                "percent": float(percent_used)
+            }
+
+            # Memory
+            mem = self.document["mem"]
+            total, used, free, percent_used = mem.split(',')
+
+            total = float(total) / output_mem
+            used = float(used) / output_mem
+            free = float(free) / output_mem
+
+            self.ram = {
+                "total": total,
+                "used": used,
+                "free": free,
+                "percent": float(percent_used)
+            }
+
+            # Bandwidth
+            bw = self.document["bw"]
+            total, used, free, percent_used = bw.split(',')
+
+            total = float(total) / output_bw
+            used = float(used) / output_bw
+            free = float(free) / output_bw
+
+            self.bw = {
+                "total": total,
+                "used": used,
+                "free": free,
+                "percent": float(percent_used)
+            }
+            return True
+        return False
+
