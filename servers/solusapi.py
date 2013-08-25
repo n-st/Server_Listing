@@ -121,3 +121,20 @@ class SolusAPI(object):
                 "percent": float(percent_used)
             }
         return False
+
+    def get_bandwidth(self, output_format=GIGABYTES):
+        if self.perform_request(bw='true'):
+            hdd = self.document["bw"]
+            total, used, free, percent_used = hdd.split(',')
+
+            total = float(total) / output_format
+            used = float(used) / output_format
+            free = float(free) / output_format
+
+            return {
+                "total": total,
+                "used": used,
+                "free": free,
+                "percent": float(percent_used)
+            }
+        return False
