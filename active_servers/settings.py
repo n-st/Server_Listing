@@ -163,4 +163,7 @@ LOGGING = {
 
 LEEWAY_TIME = 5
 
+if DEBUG:
+    LEEWAY_TIME = 0
+
 from local_settings import *
