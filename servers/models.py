@@ -5,6 +5,8 @@ from datetime import timedelta
 from ping import Ping
 from django.conf import settings
 from servers.emailers import send_failure, send_back_up
+import urllib2
+import urllib
 
 
 class Purpose(models.Model):
@@ -236,3 +238,24 @@ class SolusAPI(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def api_full_url(self):
+        full_url = self.api_url
+        if not full_url.endswith('/'):
+            full_url += '/'
+        full_url += 'api/client/command.php'
+        return full_url
+
+    def get_all_data(self):
+        request_data = urllib.urlencode({
+            "key": self.api_key,
+            "hash": self.api_hash,
+            "action": "info",
+        })
+        request = urllib2.Request(self.api_full_url(), request_data)
+        request.add_header('User-agent', 'Mozilla/5.0')
+        print self.api_full_url()
+        response = urllib2.urlopen(request)
+        response_data = response.read()
+
+        print response_data
