@@ -1,5 +1,12 @@
 import os
-from deployer.templates import LOCAL_SETTINGS, GUNICORN_START, GUNICORN_SUPERVISOR, NGINX_CONFG
+from deployer.templates import (
+    LOCAL_SETTINGS,
+    GUNICORN_START,
+    GUNICORN_SUPERVISOR,
+    NGINX_CONFG,
+    ADDITIONAL_SETTINGS_FORMAT,
+    ADMIN_SETTINGS_FORMAT
+)
 
 
 class Configuration(object):
@@ -62,6 +69,28 @@ class Configuration(object):
         return False
 
     def local_settings(self):
+
+        additional_settings = ""
+        for setting in self.data["other_settings"]:
+
+            setting_value = self.data["other_settings"][setting]
+            if type(setting_value) == str or type(setting_value) == unicode:
+                setting_value = "'" + setting_value + "'"
+
+            additional_settings += ADDITIONAL_SETTINGS_FORMAT.format(
+                setting_name=setting.upper(),
+                setting_value=setting_value
+            )
+        additional_settings = additional_settings.strip('\n')
+
+        admins = ""
+        for admin in self.data["admins"]:
+            admins += ADMIN_SETTINGS_FORMAT.format(
+                admin_name=admin,
+                admin_email=self.data["admins"][admin]
+            )
+        admins = admins.strip('\n')
+
         return LOCAL_SETTINGS.format(
             name=self.data["database"]["name"],
             host=self.data["database"]["host"],
@@ -69,6 +98,8 @@ class Configuration(object):
             password=self.data["database"]["pass"],
             type=self.database_type(),
             site_name=self.site_name(),
+            additional_settings=additional_settings,
+            admins=admins
         )
 
     def local_settings_path(self):

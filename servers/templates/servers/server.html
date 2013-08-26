@@ -1,116 +1,204 @@
 {% extends 'base.html' %}
 
-{% block page_title %}Server Details <small>{{ server.name }}</small>{% endblock %}
+{% block page_title %}
+  Server Details
+  <small>
+    {{ server.name }}
+    {% if server.check_status %}
+      {% if server.is_up %}
+        <span class="label label-success">Server Online!</span>
+      {% else %}
+        <span class="label label-danger">Server Offline!</span>
+      {% endif %}
+    {% endif %}
+  </small>
+{% endblock %}
 
 {% block content %}
 
   {% include 'servers/progress_bar.html' with percentage=server.percentage_time_used type=server.bar_type %}
 
-  <div class="panel panel-default">
-    <div class="panel-heading"><span class="text-info">{{ server.name }}</span> details</div>
-    <table class="table">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+    <li><a href="#specification" data-toggle="tab">Specification</a></li>
+    {% if server.check_status %}<li><a href="#uptime" data-toggle="tab">Uptime</a></li>{% endif %}
+    {% if server.has_purpose %}<li><a href="#purpose" data-toggle="tab">Purposes</a></li>{% endif %}
+  </ul>
 
-      <tr>
-        <td><strong>Name</strong></td>
-        <td>{{ server.name }}</td>
-      </tr>
+  <br />
 
-      <tr>
-        <td><strong>Cost</strong></td>
-        <td>${{ server.cost }}</td>
-      </tr>
+  <div class="tab-content">
+    <div class="tab-pane active" id="details">
+      <div class="panel panel-default">
+        <div class="panel-heading"><span class="text-info">{{ server.name }}</span> details</div>
+        <table class="table">
 
-      <tr>
-        <td><strong>Main IP</strong></td>
-        <td>{{ server.main_ip }}</td>
-      </tr>
+          <tr>
+            <td><strong>Name</strong></td>
+            <td>{{ server.name }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Total IPs</strong></td>
-        <td>{{ server.total_ip_count }}</td>
-      </tr>
+          <tr>
+            <td><strong>Cost</strong></td>
+            <td>${{ server.cost }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Next due on</strong></td>
-        <td>{{ server.next_due_date }} <span class="text-success">({{ server.next_due_date | timeuntil }})</span></td>
-      </tr>
+          <tr>
+            <td><strong>Main IP</strong></td>
+            <td>{{ server.main_ip }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Billing type</strong></td>
-        <td>{{ server.get_billing_type_display }}</td>
-      </tr>
+          <tr>
+            <td><strong>Total IPs</strong></td>
+            <td>{{ server.total_ip_count }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Purchased on</strong></td>
-        <td>{{ server.purchased_at }}</td>
-      </tr>
+          <tr>
+            <td><strong>Next due on</strong></td>
+            <td>{{ server.next_due_date }} <span class="text-success">({{ server.next_due_date | timeuntil }})</span></td>
+          </tr>
 
-    </table>
-  </div>
+          <tr>
+            <td><strong>Billing type</strong></td>
+            <td>{{ server.get_billing_type_display }}</td>
+          </tr>
 
-  <div class="panel panel-default">
-    <div class="panel-heading"><span class="text-info">{{ server.name }}</span> specification</div>
-    <table class="table">
+          <tr>
+            <td><strong>Purchased on</strong></td>
+            <td>{{ server.purchased_at }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Number of cores</strong></td>
-        <td>{{ server.number_cores }}</td>
-      </tr>
-
-      <tr>
-        <td><strong>Bandwidth</strong></td>
-        <td>{{ server.bandwidth }} GB</td>
-      </tr>
-
-      <tr>
-        <td><strong>Ram total</strong></td>
-        <td>{{ server.ram }} MB</td>
-      </tr>
-
-      <tr>
-        <td><strong>Burstable RAM</strong></td>
-        <td>{{ server.burst }} MB</td>
-      </tr>
-
-      <tr>
-        <td><strong>HDD Capacity</strong></td>
-        <td>{{ server.hdd_space }}</td>
-      </tr>
-
-      <tr>
-        <td><strong>Virtualisation Type</strong></td>
-        <td>{{ server.get_virt_type_display }}</td>
-      </tr>
-
-    </table>
-  </div>
-
-  {% if server.has_notes %}
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Notes</h3>
+        </table>
       </div>
-      <div class="panel-body">
-        {{ server.html_notes|safe }}
+
+      {% if server.extra_ip_set.count != 0 %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Other IP Addresses</h3>
+        </div>
+
+        <ul class="list-group">
+          {% for ip in server.extra_ip_set.all %}
+            <li class="list-group-item">{{ ip.ip }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if server.has_notes %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Notes</h3>
+          </div>
+          <div class="panel-body">
+            {{ server.notes | linebreaks }}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="tab-pane" id="specification">
+      <div class="panel panel-default">
+        <div class="panel-heading"><span class="text-info">{{ server.name }}</span> specification</div>
+        <table class="table">
+
+          <tr>
+            <td><strong>Number of cores</strong></td>
+            <td>{{ server.number_cores }}</td>
+          </tr>
+
+          <tr>
+            <td><strong>Bandwidth</strong></td>
+            <td>{{ server.bandwidth }} GB</td>
+          </tr>
+
+          <tr>
+            <td><strong>Ram total</strong></td>
+            <td>{{ server.ram }} MB</td>
+          </tr>
+
+          <tr>
+            <td><strong>Burstable RAM</strong></td>
+            <td>{{ server.burst }} MB</td>
+          </tr>
+
+          <tr>
+            <td><strong>HDD Capacity</strong></td>
+            <td>{{ server.hdd_space }}</td>
+          </tr>
+
+          <tr>
+            <td><strong>Virtualisation Type</strong></td>
+            <td>{{ server.get_virt_type_display }}</td>
+          </tr>
+
+        </table>
       </div>
     </div>
-  {% endif %}
+    {% if server.check_status %}
+    <div class="tab-pane" id="uptime">
 
-  {% if server.total_ip_count != 0 %}
-  <div class="panel panel-default">
-    <div class="panel-heading">Other IP Addresses</div>
+      <div class="panel panel-{% if server.is_up %}success{% else %}danger{% endif %}">
+        <div class="panel-heading"><h3 class="panel-title">Uptime details</h3></div>
+        <table class="table">
+          <tr>
+            <td><strong>{% if server.is_up %}Online{% else %}Offline{% endif %} time</strong></td>
+            <td>{{ server.time_since_last_change | timesince }}</td>
+          </tr>
 
-    <ul class="list-group">
-      {% for ip in server.extra_ip_set.all %}
-        <li class="list-group-item">{{ ip.ip }}</li>
+          <tr>
+            <td><strong>Last checked</strong></td>
+            <td>{{ server.last_checked }} ({{ server.last_checked | timesince }} ago)</td>
+          </tr>
+        </table>
+      </div>
+
+      {% if server.has_uptime_history %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Uptime history</h3>
+        </div>
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>IP Checked</th>
+              <th>Uptime / Downtime</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          {% for uptime_log in server.uptime_history %}
+          <tr class="{% if uptime_log.online %}success{% else %}danger{% endif %}">
+            <td>{{ uptime_log.check_date }}</td>
+            <td>{{ uptime_log.ip_address }}</td>
+            <td>{{ uptime_log.abstracted_time_relative_to_now | timesince }}</td>
+            <td>
+              {% if uptime_log.online %}
+                <span class="label label-success">Online</span>
+              {% else %}
+                <span class="label label-danger">Offline</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if server.has_purpose %}
+    <div class="tab-pane" id="purpose">
+      {% for purpose in server.purposes.all %}
+          {% include 'servers/purpose.html' with purpose=purpose %}
       {% endfor %}
-    </ul>
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
 
   <div class="btn-group btn-group-justified">
     <a class="btn btn-success" href="{% url 'admin:servers_server_add' %}">Create New</a>
     <a class="btn btn-primary" href="{% url 'admin:servers_server_change' server.pk %}">Edit</a>
     <a class="btn btn-danger" href="{% url 'admin:servers_server_delete' server.pk %}">Delete</a>
   </div>
+  <br />
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from servers.models import Server, Extra_IP
+from servers.models import Server, Extra_IP, ServerCheck, Purpose
 
 
 class IPInline(admin.TabularInline):
@@ -10,6 +10,7 @@ class ServerAdmin(admin.ModelAdmin):
     list_filter = ('name', 'created_at')
     list_display = ('name', 'cost', 'main_ip', 'purchased_at')
     search_fields = ['name']
+    filter_horizontal = ('purposes',)
 
     date_hierarchy = 'purchased_at'
     inlines = [
@@ -17,4 +18,9 @@ class ServerAdmin(admin.ModelAdmin):
     ]
 
 
+class ServerCheckAdmin(admin.ModelAdmin):
+    list_display = ('server_name', 'online', 'did_change')
+
 admin.site.register(Server, ServerAdmin)
+admin.site.register(ServerCheck, ServerCheckAdmin)
+admin.site.register(Purpose)

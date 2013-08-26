@@ -1,5 +1,4 @@
-LOCAL_SETTINGS = """
-DATABASES = {{
+LOCAL_SETTINGS = """DATABASES = {{
     'default': {{
         'ENGINE': 'django.db.backends.{type}',
         'NAME': '{name}',
@@ -16,7 +15,18 @@ ALLOWED_HOSTS = ['{site_name}']
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+ADMINS = (
+{admins}
+)
+
+{additional_settings}
 """
+
+ADDITIONAL_SETTINGS_FORMAT = "{setting_name} = {setting_value}\n"
+ADMIN_SETTINGS_FORMAT = "    ('{admin_name}', '{admin_email}'),\n"
 
 GUNICORN_START = """#!/bin/bash
 

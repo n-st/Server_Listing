@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Awesome Email Marketing!</title>
+  </head>
+  <body>
+    <h1 style="font-family: Arial, serif">
+      Server
+    <span style="color: limegreen">{{ server.name }}</span>
+      was down but is back up.
+    </h1>
+    <h3 style="font-family: Arial, serif; color: #ff4f43">
+      Total downtime: {{ server_log.last_change.abstracted_time_relative_to_now | timesince }}
+    </h3>
+
+    The ping exited with status code {{ ping.status_code }}.<br />
+    Full output of the point when the server came back up can be seen below.
+    <br /><Br />
+    The ping initially failed for the IP at {{ server_log.last_change.ip_address }} with the date
+    {{ server_log.last_change.check_date }}!<br /><br />
+
+    The success log is:
+
+    {% include 'servers/emails/email_log.html' %}
+
+  </body>
+</html>
