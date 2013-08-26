@@ -44,8 +44,8 @@ to upload any changes and restart the server::
    fab create_local_settings
    fab server_restart
 
-Updating the site
------------------
+Upgrading the site
+------------------
 
 To update the site to a newer version from github, run the command below. This will update the source code
 and migrate your database with any changes. It will also stop the server while it is updating, so wait for the 
