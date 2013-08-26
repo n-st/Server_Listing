@@ -11,6 +11,6 @@ urlpatterns = patterns('',
 
     url(r'^$', 'servers.views.server_list'),
     url(r'^server/', include('servers.urls')),
-    # Uncomment the next line to enable the admin:
+    url(r'^accounts/', include('quick_auth.urls', namespace='quick_auth')),
     url(r'^admin/', include(admin.site.urls)),
 )

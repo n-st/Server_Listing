@@ -23,6 +23,7 @@
     <li><a href="#specification" data-toggle="tab">Specification</a></li>
     {% if server.check_status %}<li><a href="#uptime" data-toggle="tab">Uptime</a></li>{% endif %}
     {% if server.has_purpose %}<li><a href="#purpose" data-toggle="tab">Purposes</a></li>{% endif %}
+    {% if server.solusapi != None %}<li><a href="#solus" data-toggle="tab">Solus</a></li>{% endif %}
   </ul>
 
   <br />
@@ -108,12 +109,18 @@
 
           <tr>
             <td><strong>Bandwidth</strong></td>
-            <td>{{ server.bandwidth }} GB</td>
+            <td>
+              <span id="spec-bandwidth">{{ server.bandwidth }} GB</span>
+              {% include 'servers/ajax_button.html' with attribute='spec-bandwidth' %}
+            </td>
           </tr>
 
           <tr>
             <td><strong>Ram total</strong></td>
-            <td>{{ server.ram }} MB</td>
+            <td>
+              <span id="spec-ram">{{ server.ram }} MB</span>
+              {% include 'servers/ajax_button.html' with attribute='spec-ram' %}
+            </td>
           </tr>
 
           <tr>
@@ -123,7 +130,10 @@
 
           <tr>
             <td><strong>HDD Capacity</strong></td>
-            <td>{{ server.hdd_space }}</td>
+            <td>
+              <span id="spec-hdd">{{ server.hdd_space }}</span>
+              {% include 'servers/ajax_button.html' with attribute='spec-hdd' %}
+            </td>
           </tr>
 
           <tr>
@@ -193,6 +203,15 @@
       {% endfor %}
     </div>
     {% endif %}
+
+    {% if server.solusapi != None %}
+      <div class="tab-pane" id="solus">
+        <div class="col-md-12 text-center">
+          <a href="#" class="btn btn-success disabled">Loading data...</a>
+        </div>
+        <br />
+      </div>
+    {% endif %}
   </div>
 
   <div class="btn-group btn-group-justified">
@@ -201,4 +220,52 @@
     <a class="btn btn-danger" href="{% url 'admin:servers_server_delete' server.pk %}">Delete</a>
   </div>
   <br />
+{% endblock %}
+
+
+{% block extra_js %}
+{% if server.solusapi != None %}
+<script type="text/javascript">
+  function update_spec(spec_name){
+    $("#button-" + spec_name).addClass('disabled');
+    var data = {
+      server: {{ server.pk }},
+      attribute: spec_name,
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    $.post("{% url 'servers.views.update_server' %}", data).done(function(data) {
+      if (data["success"]){
+        if ('spec-bandwidth' in data){
+          $('#spec-bandwidth').html(data["spec-bandwidth"] + ' GB')
+        } else if ('spec-ram' in data) {
+          $('#spec-ram').html(data["spec-ram"] + ' MB')
+        } else if ('spec-hdd' in data){
+          $('#spec-hdd').html(data["spec-hdd"] + ' GB')
+        }
+        $("#button-" + spec_name).removeClass('disabled');
+      } else {
+        //TODO: handle this
+      }
+    });
+  }
+
+  function update_solus(){
+    var data = {
+      server: {{ server.pk }},
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    $.post("{% url 'servers.views.get_solus_data' %}", data).done(function(data) {
+      if (data['success']){
+        $('#solus').html(data['html'])
+      } else {
+        //TODO: handle this
+      }
+    });
+  }
+
+  $(document).ready(function(){
+    update_solus();
+  })
+</script>
+{% endif %}
 {% endblock %}

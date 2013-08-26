@@ -8,14 +8,26 @@
 </head>
 <body>
   <div class="container">
-    <ul class="nav nav-pills" style="margin-top: 20px;">
-      <li class="active"><a href="{% url 'servers.views.server_list' %}">Home</a></li>
-      <li><a href="{% url 'admin:index' %}">Manage Servers</a></li>
-    </ul>
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-md-6">
+        <ul class="nav nav-pills">
+          <li class="active"><a href="{% url 'servers.views.server_list' %}">Home</a></li>
+          <li><a href="{% url 'admin:index' %}">Manage Servers</a></li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        {% if user.is_authenticated %}
+          <ul class="nav nav-pills pull-right">
+            <li><a href="{% url 'quick_auth:logout' %}">Logout</a></li>
+          </ul>
+        {% endif %}
+      </div>
+    </div>
     <h1 class="page-header">{% block page_title %}{% endblock %}</h1>
     {% block content %}{% endblock %}
   </div>
   <script src="{% static 'jquery/jquery-2.0.3.min.js' %}"></script>
   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  {% block extra_js %}{% endblock %}
 </body>
 </html>
