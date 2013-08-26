@@ -106,6 +106,8 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+LOGIN_REDIRECT_URL = '/'
+
 ROOT_URLCONF = 'active_servers.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
