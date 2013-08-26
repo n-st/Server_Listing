@@ -70,8 +70,8 @@ The :file:`hosts_data.json` file should look similar to the following:
 Website name setup
 ------------------
 
-In the :file:`hosts_data.json` file, there are two settings up the top. The first is :code:`server_login` and
-the second is :code:`website_url`. The :code:`website_url` directive should contain the hostname that points
+In the :file:`hosts_data.json` file, there are two settings up the top. The first is ``server_login`` and
+the second is ``website_url``. The ``website_url`` directive should contain the hostname that points
 to your server's IP address. This is the only URL that the site will be accessible at. Some examples of valid
 site names are::
 
@@ -79,7 +79,7 @@ site names are::
    sub.mysite.com
    www.mysite.com
 
-The second setting, :code:`server_login`, is the SSH address for your server. You must have SSH access to your
+The second setting, ``server_login``, is the SSH address for your server. You must have SSH access to your
 server for the automated setup to work. Some examples of valid server logins are::
 
    root@mysite.com
@@ -114,7 +114,7 @@ Email Settings
 --------------
 
 To be able to receive email alerts when servers go down and come back online, you must set the 
-correct SMTP settings under :code:`other_settings`.
+correct SMTP settings under ``other_settings``.
 
 .. code-block:: javascript
 
@@ -127,7 +127,7 @@ correct SMTP settings under :code:`other_settings`.
        "email_use_tls": false
    },
 
-If your server uses SSL, you must set :code:`email_use_tls` to :code:`true` and possibly change the port
+If your server uses SSL, you must set ``email_use_tls`` to ``true`` and possibly change the port
 (if your provider has SSL on a different port)
 
 All the settings here should be fairly self-explanatory.
@@ -136,7 +136,7 @@ Admins
 ------
 
 These are the people who are emailed when the server suffers from a critical error. If you do not need this,
-leave the :code:`admins` setting empty, like the following:
+leave the ``admins`` setting empty, like the following:
 
 .. code-block:: javascript
 
@@ -156,7 +156,7 @@ Ensure that you are in the main directory of the code, and run::
 This will setup all required files, install a supervisor configuration and load in a new site to nginx.
 At times during the install you may be asked for your root password to install packages.
 
-The site is now installed, and you can navigate to your domain name that you set with :code:`website_url`
+The site is now installed, and you can navigate to your domain name that you set with ``website_url``
 and use the site. A demo user has been installed with an insecure password which you must change as soon
 as you login. The demo user's details are:
 
