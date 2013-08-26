@@ -23,7 +23,7 @@
     <li><a href="#specification" data-toggle="tab">Specification</a></li>
     {% if server.check_status %}<li><a href="#uptime" data-toggle="tab">Uptime</a></li>{% endif %}
     {% if server.has_purpose %}<li><a href="#purpose" data-toggle="tab">Purposes</a></li>{% endif %}
-    {% if server.solusapi != None %}<li><a href="#solus" data-toggle="tab">Solus</a></li>{% endif %}
+    {% if server.has_solus %}<li><a href="#solus" data-toggle="tab">Solus</a></li>{% endif %}
   </ul>
 
   <br />
@@ -72,19 +72,24 @@
         </table>
       </div>
 
-      {% if server.extra_ip_set.count != 0 %}
+
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Other IP Addresses</h3>
+          <h3 class="panel-title clearfix">
+            Other IP Addresses
+            {% if server.has_solus %}
+            <button class="btn btn-success btn-xs pull-right" id="ip-update-button" onclick="update_ips()">
+              Update from Solus
+            </button>
+          {% endif %}
+          </h3>
         </div>
 
-        <ul class="list-group">
-          {% for ip in server.extra_ip_set.all %}
-            <li class="list-group-item">{{ ip.ip }}</li>
-          {% endfor %}
+        <ul class="list-group" id="extra-ips">
+          {% include 'servers/server_extra_ip.html' with server=server %}
         </ul>
       </div>
-      {% endif %}
+
 
       {% if server.has_notes %}
         <div class="panel panel-default">
@@ -204,7 +209,7 @@
     </div>
     {% endif %}
 
-    {% if server.solusapi != None %}
+    {% if server.has_solus %}
       <div class="tab-pane" id="solus">
         <div class="col-md-12 text-center">
           <a href="#" class="btn btn-success disabled">Loading data...</a>
@@ -224,8 +229,21 @@
 
 
 {% block extra_js %}
-{% if server.solusapi != None %}
+{% if server.has_solus %}
 <script type="text/javascript">
+
+  function mark_fail(selector){
+    $("#" + selector).removeClass('btn-success');
+    $("#" + selector).addClass('btn-danger');
+    $("#" + selector).removeClass('disabled');
+  }
+
+  function mark_success(selector){
+    $("#" + selector).removeClass('btn-danger');
+    $("#" + selector).addClass('btn-success');
+    $("#" + selector).removeClass('disabled');
+  }
+
   function update_spec(spec_name){
     $("#button-" + spec_name).addClass('disabled');
     var data = {
@@ -242,29 +260,48 @@
         } else if ('spec-hdd' in data){
           $('#spec-hdd').html(data["spec-hdd"] + ' GB')
         }
-        $("#button-" + spec_name).removeClass('disabled');
+        mark_success("button-" + spec_name);
       } else {
-        //TODO: handle this
+        mark_fail("button-" + spec_name);
       }
     });
   }
 
-  function update_solus(){
+  function update_ips(){
+    $("#ip-update-button").addClass('disabled');
     var data = {
       server: {{ server.pk }},
       csrfmiddlewaretoken: "{{ csrf_token }}"
     };
+    $.post("{% url 'servers.views.update_ips' %}", data).done(function(data) {
+      if (data["success"]){
+        $("#extra-ips").html(data["ips"]);
+        mark_success("ip-update-button");
+      } else {
+        mark_fail("ip-update-button");
+      }
+    });
+  }
+
+  function update_solus(button){
+    var data = {
+      server: {{ server.pk }},
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    if(button){
+      $("#all-solus-request").addClass('disabled');
+    }
     $.post("{% url 'servers.views.get_solus_data' %}", data).done(function(data) {
       if (data['success']){
-        $('#solus').html(data['html'])
+        $('#solus').html(data['html']);
       } else {
-        //TODO: handle this
+        $('#solus').html("Request could not be handled.");
       }
     });
   }
 
   $(document).ready(function(){
-    update_solus();
+    update_solus(false);
   })
 </script>
 {% endif %}
