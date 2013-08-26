@@ -12,8 +12,7 @@ Contents:
    :maxdepth: 2
 
    getting_started/installing
-
-
+   management/management
 
 Indices and tables
 ==================
