@@ -144,6 +144,11 @@ class Server(models.Model):
             return True
         return False
 
+    def has_solus(self):
+        if self.solusapi is not None:
+            return True
+        return False
+
 
 class Extra_IP(models.Model):
     server = models.ForeignKey(Server)
