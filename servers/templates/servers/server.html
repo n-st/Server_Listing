@@ -249,22 +249,25 @@
     });
   }
 
-  function update_solus(){
+  function update_solus(button){
     var data = {
       server: {{ server.pk }},
       csrfmiddlewaretoken: "{{ csrf_token }}"
     };
+    if(button){
+      $("#all-solus-request").addClass('disabled');
+    }
     $.post("{% url 'servers.views.get_solus_data' %}", data).done(function(data) {
       if (data['success']){
-        $('#solus').html(data['html'])
+        $('#solus').html(data['html']);
       } else {
-        //TODO: handle this
+        $('#solus').html("Request could not be handled.");
       }
     });
   }
 
   $(document).ready(function(){
-    update_solus();
+    update_solus(false);
   })
 </script>
 {% endif %}
