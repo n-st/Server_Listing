@@ -26,7 +26,7 @@ Stopping the site
 
 Run the following command to stop the site::
    
-   fab server_top
+   fab server_stop
 
 Restarting the site
 -------------------
