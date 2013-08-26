@@ -11,7 +11,7 @@ site_settings = {
     "settings_module": 'active_servers.settings',
     "settings_local": 'active_servers/local_settings.py',
     "application_name": 'active_servers',
-    "git_location": "git@bitbucket.org:darayus/server_listing.git",
+    "git_location": "git@github.com:ServerListing/Server_Listing.git",
     "git_branch": "develop",
 
     # Defaults
