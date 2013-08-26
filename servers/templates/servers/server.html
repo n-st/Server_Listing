@@ -23,6 +23,7 @@
     <li><a href="#specification" data-toggle="tab">Specification</a></li>
     {% if server.check_status %}<li><a href="#uptime" data-toggle="tab">Uptime</a></li>{% endif %}
     {% if server.has_purpose %}<li><a href="#purpose" data-toggle="tab">Purposes</a></li>{% endif %}
+    {% if server.solusapi != None %}<li><a href="#solus" data-toggle="tab">Solus</a></li>{% endif %}
   </ul>
 
   <br />
@@ -202,6 +203,15 @@
       {% endfor %}
     </div>
     {% endif %}
+
+    {% if server.solusapi != None %}
+      <div class="tab-pane" id="solus">
+        <div class="col-md-12 text-center">
+          <a href="#" class="btn btn-success disabled">Loading data...</a>
+        </div>
+        <br />
+      </div>
+    {% endif %}
   </div>
 
   <div class="btn-group btn-group-justified">
@@ -214,6 +224,7 @@
 
 
 {% block extra_js %}
+{% if server.solusapi != None %}
 <script type="text/javascript">
   function update_spec(spec_name){
     $("#button-" + spec_name).addClass('disabled');
@@ -237,5 +248,24 @@
       }
     });
   }
+
+  function update_solus(){
+    var data = {
+      server: {{ server.pk }},
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    $.post("{% url 'servers.views.get_solus_data' %}", data).done(function(data) {
+      if (data['success']){
+        console.log(data)
+      } else {
+        //TODO: handle this
+      }
+    });
+  }
+
+  $(document).ready(function(){
+    update_solus();
+  })
 </script>
+{% endif %}
 {% endblock %}
