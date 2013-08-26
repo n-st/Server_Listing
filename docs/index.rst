@@ -13,6 +13,7 @@ Contents:
 
    getting_started/installing
    management/management
+   uninstalling/uninstalling
 
 Indices and tables
 ==================
