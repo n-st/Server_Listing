@@ -66,3 +66,29 @@ def update_server(request):
         response_data = {"success": False}
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required()
+def get_solus_data(request):
+    response_data = {
+        "success": True,
+    }
+    if request.method == "POST":
+        if request.is_ajax():
+            server = get_object_or_404(Server, pk=request.POST["server"])
+            if server.solusapi is None:
+                response_data = {"success": False}
+            else:
+                api = server.solusapi.get_raw_api()
+                if api.get_all():
+                    response_data['bw'] = api.bw
+                    response_data['mem'] = api.ram
+                    response_data['hdd'] = api.hdd
+                else:
+                    response_data = {"success": False}
+        else:
+            response_data = {"success": False}
+    else:
+        response_data = {"success": False}
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

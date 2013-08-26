@@ -300,3 +300,11 @@ class SolusAPI(models.Model):
             self.server.save()
             return self.server.hdd_space
         return False
+
+    def get_raw_api(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+        return api
