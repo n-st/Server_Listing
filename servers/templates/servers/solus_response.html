@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Server Memory</h3>
+      </div>
+      <div class="panel-body">
+        <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ memory.percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ memory.percent }}%">
+            <span class="sr-only">{{ memory.percent }}% Used</span>
+          </div>
+        </div>
+      </div>
+
+      <table class="table">
+        <tr>
+          <td><strong>Total RAM</strong></td>
+          <td>{{ memory.total }} MB</td>
+        </tr>
+        <tr>
+          <td><strong>Used RAM</strong></td>
+          <td>{{ memory.used }} MB</td>
+        </tr>
+        <tr>
+          <td><strong>Free RAM</strong></td>
+          <td>{{ memory.free }} MB</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Server HDD Space</h3>
+      </div>
+      <div class="panel-body">
+        <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ hdd.percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ hdd.percent }}%">
+            <span class="sr-only">{{ hdd.percent }}% Used</span>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <tr>
+          <td><strong>Total HDD</strong></td>
+          <td>{{ hdd.total }} GB</td>
+        </tr>
+        <tr>
+          <td><strong>Used HDD</strong></td>
+          <td>{{ hdd.used }} GB</td>
+        </tr>
+        <tr>
+          <td><strong>Free HDD</strong></td>
+          <td>{{ hdd.free }} GB</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Server Bandwidth</h3>
+      </div>
+      <div class="panel-body">
+        <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ bandwidth.percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ bandwidth.percent }}%">
+            <span class="sr-only">{{ bandwidth.percent }}% Used</span>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <tr>
+          <td><strong>Total Bandwidth</strong></td>
+          <td>{{ bandwidth.total }} GB</td>
+        </tr>
+        <tr>
+          <td><strong>Used Bandwidth</strong></td>
+          <td>{{ bandwidth.used }} GB</td>
+        </tr>
+        <tr>
+          <td><strong>Free Bandwidth</strong></td>
+          <td>{{ bandwidth.free }} GB</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="text-center col-md-12">
+    <button class="btn btn-success" onclick="update_solus()">Update Again</button>
+  </div>
+  <br />
+</div>

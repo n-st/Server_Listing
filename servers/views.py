@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from servers.models import Server, ServerCheck
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
+from django.template.loader import render_to_string
 import json
 
 
@@ -84,6 +85,11 @@ def get_solus_data(request):
                     response_data['bw'] = api.bw
                     response_data['mem'] = api.ram
                     response_data['hdd'] = api.hdd
+                    response_data['html'] = render_to_string('servers/solus_response.html', {
+                        "bandwidth": api.bw,
+                        "memory": api.ram,
+                        "hdd": api.hdd
+                    })
                 else:
                     response_data = {"success": False}
         else:

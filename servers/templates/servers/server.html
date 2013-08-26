@@ -256,7 +256,7 @@
     };
     $.post("{% url 'servers.views.get_solus_data' %}", data).done(function(data) {
       if (data['success']){
-        console.log(data)
+        $('#solus').html(data['html'])
       } else {
         //TODO: handle this
       }
