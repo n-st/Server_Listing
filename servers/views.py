@@ -98,3 +98,28 @@ def get_solus_data(request):
         response_data = {"success": False}
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def update_ips(request):
+    response_data = {
+        "success": True,
+    }
+    if request.method == "POST":
+        if request.is_ajax():
+            server = get_object_or_404(Server, pk=request.POST["server"])
+            if server.solusapi is None:
+                response_data = {"success": False}
+            else:
+                updated = server.solusapi.update_ip_list()
+                if updated:
+                    response_data['ips'] = render_to_string('servers/server_extra_ip.html', {
+                        "server": server,
+                    })
+                else:
+                    response_data = {"success": False}
+        else:
+            response_data = {"success": False}
+    else:
+        response_data = {"success": False}
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

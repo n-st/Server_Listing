@@ -72,19 +72,24 @@
         </table>
       </div>
 
-      {% if server.extra_ip_set.count != 0 %}
+
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Other IP Addresses</h3>
+          <h3 class="panel-title clearfix">
+            Other IP Addresses
+            {% if server.solusapi != None %}
+            <button class="btn btn-success btn-xs pull-right" id="ip-update-button" onclick="update_ips()">
+              Update from Solus
+            </button>
+          {% endif %}
+          </h3>
         </div>
 
-        <ul class="list-group">
-          {% for ip in server.extra_ip_set.all %}
-            <li class="list-group-item">{{ ip.ip }}</li>
-          {% endfor %}
+        <ul class="list-group" id="extra-ips">
+          {% include 'servers/server_extra_ip.html' with server=server %}
         </ul>
       </div>
-      {% endif %}
+
 
       {% if server.has_notes %}
         <div class="panel panel-default">
@@ -243,6 +248,22 @@
           $('#spec-hdd').html(data["spec-hdd"] + ' GB')
         }
         $("#button-" + spec_name).removeClass('disabled');
+      } else {
+        //TODO: handle this
+      }
+    });
+  }
+
+  function update_ips(){
+    $("#ip-update-button").addClass('disabled');
+    var data = {
+      server: {{ server.pk }},
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    $.post("{% url 'servers.views.update_ips' %}", data).done(function(data) {
+      if (data["success"]){
+        $("#extra-ips").html(data["ips"]);
+        $("#ip-update-button").removeClass('disabled');
       } else {
         //TODO: handle this
       }
