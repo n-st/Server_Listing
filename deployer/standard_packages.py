@@ -1,9 +1,9 @@
 from fabric.api import *
 
 REQUIRED_SYSTEM_PACKAGES = [
-    'python-pip',
     'gcc',
     'python-dev',
+    'python-pip',
     'libjpeg-dev',
     'libfreetype6-dev',
     'git',
