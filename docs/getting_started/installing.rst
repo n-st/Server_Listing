@@ -13,6 +13,14 @@ system up and running. All configurations are generated automatically and requir
    All commands should be run on your **local machine** unless specifically stated. The automated setup will
    deal with SSHing into your machine and running the commands for you.
 
+Requirements
+------------
+
+The projects requires `Python 2.7+ <http://www.python.org/download/releases/2.7/>`_
+
+For the automated setup, you need to be running either Debian or Ubuntu. You can run the site on other
+operating systems, though the automatic installer will not work.
+
 Getting the source code
 -----------------------
 
