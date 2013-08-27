@@ -68,12 +68,13 @@ def create_gunicorn_config():
 
 
 def create_demo_superuser():
-    with cd(env.hosts_data.app_path()), prefix("source {}".format(env.hosts_data.virtualenv_activate_path())):
-        commands = [
-            "echo \"from django.contrib.auth.models import User;",
-            "User.objects.create_superuser('admin', 'admin@example.com', 'pass')\" | python manage.py shell"
-        ]
-        run(' '.join(commands))
+    with cd(env.hosts_data.app_path()):
+        with prefix("source {}".format(env.hosts_data.virtualenv_activate_path())):
+            commands = [
+                "echo \"from django.contrib.auth.models import User;",
+                "User.objects.create_superuser('admin', 'admin@example.com', 'pass')\" | python manage.py shell"
+            ]
+            run(' '.join(commands))
 
 
 def create_gunicorn_supervisor():
@@ -100,9 +101,10 @@ def delete_nginx_config():
 
 
 def migrate_database():
-    with cd(env.hosts_data.app_path()), prefix("source {}".format(env.hosts_data.virtualenv_activate_path())):
-        run("python manage.py syncdb --noinput")
-        run("python manage.py migrate --noinput")
+    with cd(env.hosts_data.app_path()):
+        with prefix("source {}".format(env.hosts_data.virtualenv_activate_path())):
+            run("python manage.py syncdb --noinput")
+            run("python manage.py migrate --noinput")
 
 
 def delete_folders():
@@ -170,8 +172,9 @@ def destroy_deploy():
 
 def update_deploy():
     server_stop()
-    with cd(env.hosts_data.app_path()), prefix("source {}".format(env.hosts_data.virtualenv_activate_path())):
-        run('git pull')
-        run('pip install -r {}'.format(env.hosts_data.requirements_path()))
+    with cd(env.hosts_data.app_path()):
+        with prefix("source {}".format(env.hosts_data.virtualenv_activate_path())):
+            run('git pull')
+            run('pip install -r {}'.format(env.hosts_data.requirements_path()))
     migrate_database()
     server_start()
