@@ -9,6 +9,10 @@ The whole server is relatively easy to set up on most servers. It uses the follo
 This system uses `Fabric <http://docs.fabfile.org/en/1.7/>`_ to deploy, which means relatively low work to get the
 system up and running. All configurations are generated automatically and required packages installed.
 
+.. warning::
+   All commands should be run on your **local machine** unless specifically stated. The automated setup will
+   deal with SSHing into your machine and running the commands for you.
+
 Getting the source code
 -----------------------
 
