@@ -14,7 +14,7 @@ Getting the source code
 
 Clone the source code to you **local machine** first by running the following command in bash::
 
-   git clone git@github.com:ServerListing/Server_Listing.git server_listing
+   git clone https://github.com/ServerListing/Server_Listing.git server_listing
 
 Once it has finished cloning, install fabric into your python packages::
 
