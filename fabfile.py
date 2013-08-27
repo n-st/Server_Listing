@@ -50,6 +50,7 @@ def create_virtual_environment():
         run('virtualenv {}'.format(env.hosts_data.virtualenv_path()))
 
     with prefix("source {}".format(env.hosts_data.virtualenv_activate_path())):
+        run('pip install --upgrade distribute')
         run('pip install -r {}'.format(env.hosts_data.requirements_path()))
         if env.hosts_data.is_mysql():
             run('pip install mysql-python')
