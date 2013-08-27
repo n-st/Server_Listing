@@ -163,3 +163,28 @@ as you login. The demo user's details are:
 | **Username:** user
 | **Password:** pass
 
+Setting up a cron
+^^^^^^^^^^^^^^^^^
+
+If you plan to use the ping functionality of the site, you will need to set up a cron that will run at regular
+intervals. You can do this through the site's webcron function. If you curl the page, the cron will run (replace
+example.com with the URL of your site)::
+
+   curl https://example.com/server/ping_check/ -k
+
+To set up a cron on a regular machine, login to that machine via SSH and enter the following command to access
+the cron file::
+   
+   crontab -e
+
+At the bottom of this file, add the following line and save the file::
+
+   * * * * * curl https://example.com/server/ping_check/ -k
+
+This cron runs every minute, but your servers will only be pinged every 5 minutes. There is a lock time on each
+server that ensures that a ping is run with a minimum of 5 minutes from the last ping.
+
+.. note::
+   These steps are **not** required if you do not plan to use the inbuilt ping system in the site. You can safely
+   ignore this section and the site will still remain operational.
+
