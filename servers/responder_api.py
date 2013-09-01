@@ -6,6 +6,10 @@ def bytes_to_megs(value):
     return float(value) / 1048576.0
 
 
+def bytes_to_gigs(value):
+    return float(value) / 1073741824.0
+
+
 class ResponderAPI():
     url = ""
     key = ""
@@ -32,7 +36,7 @@ class ResponderAPI():
     def process_hdd(self):
         keys = [key for key in self.response["disk"]]
         for key in keys:
-            self.response["disk"][key + "_meg"] = bytes_to_megs(self.response["disk"][key])
+            self.response["disk"][key + "_gig"] = bytes_to_gigs(self.response["disk"][key])
 
     def send_request(self):
         try:
