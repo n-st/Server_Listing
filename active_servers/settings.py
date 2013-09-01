@@ -10,6 +10,10 @@ CELERYBEAT_SCHEDULE = {
     'ping-all-servers': {
         'task': 'servers.ping',
         'schedule': timedelta(seconds=60),
+    },
+    'bump-next-due-dates': {
+        'task': 'servers.next_due_date',
+        'schedule': timedelta(seconds=60)
     }
 }
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'

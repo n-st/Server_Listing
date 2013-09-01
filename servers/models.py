@@ -56,6 +56,7 @@ class Server(models.Model):
 
     billing_type = models.CharField(max_length=1, choices=BILLING_CHOICES, default=MONTHLY)
     purchased_at = models.DateField(default=timezone.now)
+    next_due_date = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -79,23 +80,8 @@ class Server(models.Model):
             return False
         return True
 
-    def next_due_date(self):
-        if self.billing_type == self.MONTHLY:
-            test_time = timezone.now().date().replace(day=self.purchased_at.day)
-            if test_time < timezone.now().date():
-                if test_time.month == 12:
-                    test_time = test_time.replace(month=1)
-                else:
-                    test_time = test_time.replace(month=test_time.month+1)
-            return test_time
-        else:
-            test_time = timezone.now().date().replace(day=self.purchased_at.day, month=self.purchased_at.month)
-            if test_time < timezone.now().date():
-                test_time = test_time.replace(year=test_time.year+1)
-            return test_time
-
     def percentage_time_used(self):
-        next_date = self.next_due_date()
+        next_date = self.next_due_date
         current_date = timezone.now().date()
 
         difference = next_date-current_date
