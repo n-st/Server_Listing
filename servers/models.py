@@ -167,7 +167,6 @@ class ServerCheck(models.Model):
     check_date = models.DateTimeField()
 
     online = models.BooleanField(default=True)
-    did_change = models.BooleanField(default=False)
     last_change = models.ForeignKey('ServerCheck', null=True, blank=True)
 
     def server_name(self):
@@ -179,36 +178,26 @@ class ServerCheck(models.Model):
         checker = Ping(check_log.ip_address).run_ping()
         check_log.online = checker.is_online
 
-        check_log.save()
-        if check_log.did_change:
-            if checker.is_online:
-                send_back_up(checker, check_log)
-            else:
-                send_failure(checker, check_log)
-        return check_log
-
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-
-        if ServerCheck.objects.filter(server=self.server, check_date__lt=self.check_date).exists():
-            if self.online == ServerCheck.objects.filter(
-                    server=self.server,
-                    check_date__lt=self.check_date
-            ).latest('check_date').online:
-                self.did_change = False
-            else:
-                self.did_change = True
+        if ServerCheck.objects.filter(server=server).exists():
+            last_check = ServerCheck.objects.filter(server=server).order_by('-id')[0]
+            if check_log.online == last_check.online:
+                # The server status did not change
+                return last_check
         else:
-            self.did_change = True
+            last_check = None
 
-        if ServerCheck.objects.filter(server=self.server, did_change=True, check_date__lt=self.check_date).exists():
-            self.last_change = ServerCheck.objects.filter(
-                server=self.server,
-                did_change=True,
-                check_date__lt=self.check_date
-            ).latest('check_date')
+        server.last_checked = timezone.now()
+        server.save()
 
-        return super(ServerCheck, self).save(force_insert, force_update, using, update_fields)
+        check_log.last_change = last_check
+
+        if check_log.online:
+            send_back_up(checker, check_log)
+        else:
+            send_failure(checker, check_log)
+
+        check_log.save()
+        return check_log
 
     def __unicode__(self):
         if self.online:
