@@ -31,6 +31,7 @@ Clone the source code to you **local machine** first by running the following co
 Once it has finished cloning, install fabric into your python packages::
 
    pip install fabric
+   pip install pycrypto
 
 Go into the :file:`server_listing` folder and edit the :file:`hosts_data.json` file with the required settings.
 
