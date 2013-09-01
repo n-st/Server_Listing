@@ -32,3 +32,4 @@ class ResponderAPI():
             return self
 
         self.response = request.json()
+        return self
