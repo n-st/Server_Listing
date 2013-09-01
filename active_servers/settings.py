@@ -12,6 +12,7 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=60),
     }
 }
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 CACHES = {
     'default': {
