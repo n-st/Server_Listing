@@ -117,14 +117,14 @@ class Server(models.Model):
         if self.check_status is False:
             return False
         if ServerCheck.objects.filter(server=self).exists():
-            return ServerCheck.objects.filter(server=self, did_change=True).latest('check_date').check_date
+            return ServerCheck.objects.filter(server=self).latest('check_date').check_date
         return timezone.now()
 
     def has_uptime_history(self):
-        return ServerCheck.objects.filter(server=self, did_change=True).exists()
+        return ServerCheck.objects.filter(server=self).exists()
 
     def uptime_history(self):
-        return ServerCheck.objects.filter(server=self, did_change=True).order_by('-check_date')
+        return ServerCheck.objects.filter(server=self).order_by('-check_date')
 
     def bar_type(self):
         time_used = self.percentage_time_used()
@@ -209,7 +209,6 @@ class ServerCheck(models.Model):
     def abstracted_time_relative_to_now(self):
         checks = ServerCheck.objects.filter(
             server=self.server,
-            did_change=True,
             check_date__gt=self.check_date
         ).order_by('check_date')
         if checks.exists():
