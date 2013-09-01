@@ -4,3 +4,4 @@ South==0.8.2
 paramiko==1.11.0
 pycrypto==2.6
 pytz==2013b
+MySQL-python==1.2.4
