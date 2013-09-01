@@ -29,5 +29,4 @@ class ResponderAPI():
             self.error = "Could not communicate with the server"
             return self
         self.response = request.json()
-        print self.response
         return self

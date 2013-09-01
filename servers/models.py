@@ -323,4 +323,4 @@ class ResponderAPI(models.Model):
     server = models.OneToOneField(Server)
 
     def get_responder_data(self):
-        return ResponderConnectorAPI(self.api_key, self.api_url, self.api_port).send_request().response
+        return ResponderConnectorAPI(self.api_key, self.api_url, self.api_port).send_request()
