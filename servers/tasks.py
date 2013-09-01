@@ -13,8 +13,8 @@ def ping():
     for server in servers_to_check:
         server_key = '{0}-server-ping'.format(server.pk)
         if cache.get(server_key) is not None:
-            logger.debug("Server {0} still in cool down".format(server.pk))
+            logger.info("Server {0} still in cool down".format(server.pk))
             continue
-        logger.debug("Server {0} running ping...".format(server.pk))
+        logger.info("Server {0} running ping...".format(server.pk))
         cache.add(server_key, 'true', LOCK_TIME)
         ServerCheck.check_server(server)
