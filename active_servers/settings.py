@@ -13,6 +13,13 @@ CELERYBEAT_SCHEDULE = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'main_cache',
+    }
+}
+
 BASE_DIR = os.path.join(os.path.dirname(__file__), '..')
 
 DEBUG = True
@@ -182,7 +189,7 @@ LOGGING = {
     }
 }
 
-LEEWAY_TIME = 1
+LEEWAY_TIME = 5
 
 
 from local_settings import *
