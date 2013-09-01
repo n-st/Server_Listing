@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Server Memory</h3>
+      </div>
+      <div class="panel-body">
+        <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ data.mem.percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ data.mem.percent }}%">
+            <span class="sr-only">{{ memory.percent }}% Used</span>
+          </div>
+        </div>
+      </div>
+
+      <table class="table">
+        <tr>
+          <td><strong>Total RAM</strong></td>
+          <td>{{data.mem.total_meg }} MB</td>
+        </tr>
+        <tr>
+          <td><strong>Used RAM</strong></td>
+          <td>{{ data.mem.used_meg }} MB</td>
+        </tr>
+        <tr>
+          <td><strong>Free RAM</strong></td>
+          <td>{{ data.mem.free_meg }} MB</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Server HDD Space</h3>
+      </div>
+      <div class="panel-body">
+        <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ data.disk.percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ data.disk.percent }}%">
+            <span class="sr-only">{{ data.disk.percent }}% Used</span>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <tr>
+          <td><strong>Total HDD</strong></td>
+          <td>{{ data.disk.total_gig }} GB</td>
+        </tr>
+        <tr>
+          <td><strong>Used HDD</strong></td>
+          <td>{{ data.disk.used_gig }} GB</td>
+        </tr>
+        <tr>
+          <td><strong>Free HDD</strong></td>
+          <td>{{ data.disk.free_gig }} GB</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Server CPU</h3>
+      </div>
+      <div class="panel-body">
+        <div class="progress progress-striped">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ data.cpu.percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ data.cpu.percent }}%">
+            <span class="sr-only">{{ data.cpu.percent }}% Used</span>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <tr>
+          <td><strong>CPU Usage</strong></td>
+          <td>{{ data.cpu.percent }} %</td>
+        </tr>
+        <tr>
+          <td><strong>CPU Load</strong></td>
+          <td>
+            <span class="text-success">{{ data.cpu.load.0|floatformat:2 }} (1 min)</span>,
+            <span class="text-info">{{ data.cpu.load.1|floatformat:2 }} (5 min)</span>,
+            <span class="text-warning">{{ data.cpu.load.2|floatformat:2 }} (15 min)</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>CPU Cores</strong></td>
+          <td>{{ data.cpu.cores }} Cores</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="text-center col-md-12">
+    <button id="all-responder-request" class="btn btn-success" onclick="update_responder(true)">Update Again</button>
+  </div>
+  <br />
+</div>

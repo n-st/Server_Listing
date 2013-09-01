@@ -1,5 +1,5 @@
 from django.contrib import admin
-from servers.models import Server, Extra_IP, ServerCheck, Purpose, SolusAPI
+from servers.models import Server, Extra_IP, ServerCheck, Purpose, SolusAPI, ResponderAPI
 from django.conf import settings
 
 
@@ -11,6 +11,10 @@ class SolusInline(admin.StackedInline):
     model = SolusAPI
 
 
+class ResponderInline(admin.StackedInline):
+    model = ResponderAPI
+
+
 class ServerAdmin(admin.ModelAdmin):
     list_filter = ('name', 'created_at')
     list_display = ('name', 'cost', 'main_ip', 'purchased_at')
@@ -20,6 +24,7 @@ class ServerAdmin(admin.ModelAdmin):
     date_hierarchy = 'purchased_at'
     inlines = [
         SolusInline,
+        ResponderInline,
         IPInline
     ]
 

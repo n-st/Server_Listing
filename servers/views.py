@@ -123,3 +123,28 @@ def update_ips(request):
         response_data = {"success": False}
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def get_responder_data(request):
+    response_data = {
+        "success": True,
+    }
+    if request.method == "POST":
+        if request.is_ajax():
+            server = get_object_or_404(Server, pk=request.POST["server"])
+            if server.responderapi is None:
+                response_data = {"success": False}
+            else:
+                api = server.responderapi.get_responder_data()
+                if api.success:
+                    response_data['html'] = render_to_string('servers/responder_response.html', {
+                        "data": api.response,
+                    })
+                else:
+                    response_data = {"success": False}
+        else:
+            response_data = {"success": False}
+    else:
+        response_data = {"success": False}
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
