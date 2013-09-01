@@ -74,6 +74,14 @@
           <td>{{ data.cpu.percent }} %</td>
         </tr>
         <tr>
+          <td><strong>CPU Load</strong></td>
+          <td>
+            {{ data.cpu.load.0|floatformat:2 }} (1 min)
+            {{ data.cpu.load.1|floatformat:2 }} (5 min)
+            {{ data.cpu.load.2|floatformat:2 }} (15 min)
+          </td>
+        </tr>
+        <tr>
           <td><strong>CPU Cores</strong></td>
           <td>{{ data.cpu.cores }} Cores</td>
         </tr>
