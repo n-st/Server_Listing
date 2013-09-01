@@ -178,12 +178,6 @@ class ServerCheck(models.Model):
 
     @classmethod
     def check_server(cls, server):
-
-        # Check if there was another in the leeway time
-        minimum_time = timezone.now()-timedelta(minutes=settings.LEEWAY_TIME)
-        if ServerCheck.objects.filter(server=server, check_date__gte=minimum_time).count() > 0:
-            return False
-
         check_log = ServerCheck(server=server, ip_address=server.main_ip, check_date=timezone.now())
         checker = Ping(check_log.ip_address).run_ping()
         check_log.online = checker.is_online

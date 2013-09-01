@@ -22,14 +22,6 @@ def view_server(request, server_id):
     })
 
 
-def ping_check(request):
-    servers_to_check = Server.objects.filter(check_status=True)
-    for server in servers_to_check:
-        ServerCheck.check_server(server)
-
-    return HttpResponse("")
-
-
 @login_required()
 def update_server(request):
     response_data = {
