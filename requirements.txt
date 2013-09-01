@@ -5,6 +5,7 @@ amqp==1.0.13
 anyjson==0.3.3
 billiard==2.7.3.32
 celery==3.0.22
+redis==2.8.0
 django-celery==3.0.21
 kombu==2.5.13
 paramiko==1.11.0
