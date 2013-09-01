@@ -24,6 +24,7 @@
     {% if server.check_status %}<li><a href="#uptime" data-toggle="tab">Uptime</a></li>{% endif %}
     {% if server.has_purpose %}<li><a href="#purpose" data-toggle="tab">Purposes</a></li>{% endif %}
     {% if server.has_solus %}<li><a href="#solus" data-toggle="tab">Solus</a></li>{% endif %}
+    {% if server.has_responder %}<li><a href="#responder" data-toggle="tab">Responder</a></li>{% endif %}
   </ul>
 
   <br />
@@ -211,6 +212,15 @@
 
     {% if server.has_solus %}
       <div class="tab-pane" id="solus">
+        <div class="col-md-12 text-center">
+          <a href="#" class="btn btn-success disabled">Loading data...</a>
+        </div>
+        <br />
+      </div>
+    {% endif %}
+
+    {% if server.has_responder %}
+      <div class="tab-pane" id="responder">
         <div class="col-md-12 text-center">
           <a href="#" class="btn btn-success disabled">Loading data...</a>
         </div>
