@@ -316,7 +316,7 @@ class SolusAPI(models.Model):
 
 
 class ResponderAPI(models.Model):
-    auth_key = models.CharField(max_length=255)
-    port = models.IntegerField(max_length=8)
+    api_key = models.CharField(max_length=255)
+    api_port = models.IntegerField(max_length=8)
     server = models.OneToOneField(Server)
-    url = models.CharField(max_length=255)
+    api_url = models.CharField(max_length=255)
