@@ -12,9 +12,8 @@ class ResponderAPI():
     response = {}
 
     def __init__(self, key, url, port):
-        if url.endswith('/'):
-            url = url[:-1]
-        self.url = url + str(port)
+        self.url = url
+        self.port = port
         self.key = key
 
         self.params = {
@@ -22,13 +21,14 @@ class ResponderAPI():
         }
 
     def send_request(self):
-        request = requests.get(self.url, params=self.params)
+        request = requests.get(self.url, params=self.params, port=self.port)
 
         try:
             request.raise_for_status()
-        except HTTPError:
+        except HTTPError as e:
             self.success = False
             self.error = "Could not communicate with the server"
+            print e
             return self
 
         self.response = request.json()
