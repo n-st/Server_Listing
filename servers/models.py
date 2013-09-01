@@ -313,3 +313,10 @@ class SolusAPI(models.Model):
             api_hash=self.api_hash
         )
         return api
+
+
+class ResponderAPI(models.Model):
+    auth_key = models.CharField(max_length=255)
+    port = models.IntegerField(max_length=8)
+    server = models.OneToOneField(Server)
+    url = models.CharField(max_length=255)
