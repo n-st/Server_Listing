@@ -317,7 +317,7 @@ class SolusAPI(models.Model):
 
 
 class ResponderAPI(models.Model):
-    api_url = models.CharField(max_length=255)
+    api_url = models.GenericIPAddressField()
     api_key = models.CharField(max_length=255)
     api_port = models.IntegerField(max_length=8)
     server = models.OneToOneField(Server)
