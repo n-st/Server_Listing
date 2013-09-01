@@ -1,0 +1,7 @@
+{% if server.extra_ip_set.count != 0 %}
+  {% for ip in server.extra_ip_set.all %}
+    <li class="list-group-item">{{ ip.ip }}</li>
+  {% endfor %}
+{% else %}
+    <li class="list-group-item">No extra IPs</li>
+{% endif %}

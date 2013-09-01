@@ -18,159 +18,216 @@
 
   {% include 'servers/progress_bar.html' with percentage=server.percentage_time_used type=server.bar_type %}
 
-  <div class="panel panel-default">
-    <div class="panel-heading"><span class="text-info">{{ server.name }}</span> details</div>
-    <table class="table">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+    <li><a href="#specification" data-toggle="tab">Specification</a></li>
+    {% if server.check_status %}<li><a href="#uptime" data-toggle="tab">Uptime</a></li>{% endif %}
+    {% if server.has_purpose %}<li><a href="#purpose" data-toggle="tab">Purposes</a></li>{% endif %}
+    {% if server.has_solus %}<li><a href="#solus" data-toggle="tab">Solus</a></li>{% endif %}
+    {% if server.has_responder %}<li><a href="#responder" data-toggle="tab">Responder</a></li>{% endif %}
+  </ul>
 
-      <tr>
-        <td><strong>Name</strong></td>
-        <td>{{ server.name }}</td>
-      </tr>
+  <br />
 
-      <tr>
-        <td><strong>Cost</strong></td>
-        <td>${{ server.cost }}</td>
-      </tr>
+  <div class="tab-content">
+    <div class="tab-pane active" id="details">
+      <div class="panel panel-default">
+        <div class="panel-heading"><span class="text-info">{{ server.name }}</span> details</div>
+        <table class="table">
 
-      <tr>
-        <td><strong>Main IP</strong></td>
-        <td>{{ server.main_ip }}</td>
-      </tr>
+          <tr>
+            <td><strong>Name</strong></td>
+            <td>{{ server.name }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Total IPs</strong></td>
-        <td>{{ server.total_ip_count }}</td>
-      </tr>
+          <tr>
+            <td><strong>Cost</strong></td>
+            <td>${{ server.cost }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Next due on</strong></td>
-        <td>{{ server.next_due_date }} <span class="text-success">({{ server.next_due_date | timeuntil }})</span></td>
-      </tr>
+          <tr>
+            <td><strong>Main IP</strong></td>
+            <td>{{ server.main_ip }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Billing type</strong></td>
-        <td>{{ server.get_billing_type_display }}</td>
-      </tr>
+          <tr>
+            <td><strong>Total IPs</strong></td>
+            <td>{{ server.total_ip_count }}</td>
+          </tr>
 
-      <tr>
-        <td><strong>Purchased on</strong></td>
-        <td>{{ server.purchased_at }}</td>
-      </tr>
+          <tr>
+            <td><strong>Next due on</strong></td>
+            <td>{{ server.next_due_date }} <span class="text-success">({{ server.next_due_date | timeuntil }})</span></td>
+          </tr>
 
-    </table>
-  </div>
+          <tr>
+            <td><strong>Billing type</strong></td>
+            <td>{{ server.get_billing_type_display }}</td>
+          </tr>
 
-  {% if server.check_status %}
-    <div class="panel panel-{% if server.is_up %}success{% else %}danger{% endif %}">
-      <div class="panel-heading"><h3 class="panel-title">Uptime details</h3></div>
-      <table class="table">
-        <tr>
-          <td><strong>{% if server.is_up %}Online{% else %}Offline{% endif %} time</strong></td>
-          <td>{{ server.time_since_last_change | timesince }}</td>
-        </tr>
+          <tr>
+            <td><strong>Purchased on</strong></td>
+            <td>{{ server.purchased_at }}</td>
+          </tr>
 
-        <tr>
-          <td><strong>Last checked</strong></td>
-          <td>{{ server.last_checked }} ({{ server.last_checked | timesince }} ago)</td>
-        </tr>
-      </table>
-    </div>
-  {% endif %}
-
-  <div class="panel panel-default">
-    <div class="panel-heading"><span class="text-info">{{ server.name }}</span> specification</div>
-    <table class="table">
-
-      <tr>
-        <td><strong>Number of cores</strong></td>
-        <td>{{ server.number_cores }}</td>
-      </tr>
-
-      <tr>
-        <td><strong>Bandwidth</strong></td>
-        <td>{{ server.bandwidth }} GB</td>
-      </tr>
-
-      <tr>
-        <td><strong>Ram total</strong></td>
-        <td>{{ server.ram }} MB</td>
-      </tr>
-
-      <tr>
-        <td><strong>Burstable RAM</strong></td>
-        <td>{{ server.burst }} MB</td>
-      </tr>
-
-      <tr>
-        <td><strong>HDD Capacity</strong></td>
-        <td>{{ server.hdd_space }}</td>
-      </tr>
-
-      <tr>
-        <td><strong>Virtualisation Type</strong></td>
-        <td>{{ server.get_virt_type_display }}</td>
-      </tr>
-
-    </table>
-  </div>
-
-  {% if server.has_notes %}
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Notes</h3>
+        </table>
       </div>
-      <div class="panel-body">
-        {{ server.html_notes|safe }}
-      </div>
-    </div>
-  {% endif %}
 
-  {% if server.total_ip_count != 0 %}
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Other IP Addresses</h3>
-    </div>
 
-    <ul class="list-group">
-      {% for ip in server.extra_ip_set.all %}
-        <li class="list-group-item">{{ ip.ip }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-
-  {% if server.has_uptime_history %}
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Uptime history</h3>
-    </div>
-
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>IP Checked</th>
-          <th>Uptime / Downtime</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      {% for uptime_log in server.uptime_history %}
-      <tr class="{% if uptime_log.online %}success{% else %}danger{% endif %}">
-        <td>{{ uptime_log.check_date }}</td>
-        <td>{{ uptime_log.ip_address }}</td>
-        <td>{{ uptime_log.abstracted_time_relative_to_now | timesince }}</td>
-        <td>
-          {% if uptime_log.online %}
-            <span class="label label-success">Online</span>
-          {% else %}
-            <span class="label label-danger">Offline</span>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title clearfix">
+            Other IP Addresses
+            {% if server.has_solus %}
+            <button class="btn btn-success btn-xs pull-right" id="ip-update-button" onclick="update_ips()">
+              Update from Solus
+            </button>
           {% endif %}
-        </td>
-      </tr>
+          </h3>
+        </div>
+
+        <ul class="list-group" id="extra-ips">
+          {% include 'servers/server_extra_ip.html' with server=server %}
+        </ul>
+      </div>
+
+
+      {% if server.has_notes %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Notes</h3>
+          </div>
+          <div class="panel-body">
+            {{ server.notes | linebreaks }}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="tab-pane" id="specification">
+      <div class="panel panel-default">
+        <div class="panel-heading"><span class="text-info">{{ server.name }}</span> specification</div>
+        <table class="table">
+
+          <tr>
+            <td><strong>Number of cores</strong></td>
+            <td>{{ server.number_cores }}</td>
+          </tr>
+
+          <tr>
+            <td><strong>Bandwidth</strong></td>
+            <td>
+              <span id="spec-bandwidth">{{ server.bandwidth }} GB</span>
+              {% include 'servers/ajax_button.html' with attribute='spec-bandwidth' %}
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Ram total</strong></td>
+            <td>
+              <span id="spec-ram">{{ server.ram }} MB</span>
+              {% include 'servers/ajax_button.html' with attribute='spec-ram' %}
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Burstable RAM</strong></td>
+            <td>{{ server.burst }} MB</td>
+          </tr>
+
+          <tr>
+            <td><strong>HDD Capacity</strong></td>
+            <td>
+              <span id="spec-hdd">{{ server.hdd_space }} GB</span>
+              {% include 'servers/ajax_button.html' with attribute='spec-hdd' %}
+            </td>
+          </tr>
+
+          <tr>
+            <td><strong>Virtualisation Type</strong></td>
+            <td>{{ server.get_virt_type_display }}</td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+    {% if server.check_status %}
+    <div class="tab-pane" id="uptime">
+
+      <div class="panel panel-{% if server.is_up %}success{% else %}danger{% endif %}">
+        <div class="panel-heading"><h3 class="panel-title">Uptime details</h3></div>
+        <table class="table">
+          <tr>
+            <td><strong>{% if server.is_up %}Online{% else %}Offline{% endif %} time</strong></td>
+            <td>{{ server.time_since_last_change | timesince }}</td>
+          </tr>
+
+          <tr>
+            <td><strong>Last checked</strong></td>
+            <td>{{ server.last_checked }} ({{ server.last_checked | timesince }} ago)</td>
+          </tr>
+        </table>
+      </div>
+
+      {% if server.has_uptime_history %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Uptime history</h3>
+        </div>
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>IP Checked</th>
+              <th>Uptime / Downtime</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          {% for uptime_log in server.uptime_history %}
+          <tr class="{% if uptime_log.online %}success{% else %}danger{% endif %}">
+            <td>{{ uptime_log.check_date }}</td>
+            <td>{{ uptime_log.ip_address }}</td>
+            <td>{{ uptime_log.abstracted_time_relative_to_now | timesince }}</td>
+            <td>
+              {% if uptime_log.online %}
+                <span class="label label-success">Online</span>
+              {% else %}
+                <span class="label label-danger">Offline</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if server.has_purpose %}
+    <div class="tab-pane" id="purpose">
+      {% for purpose in server.purposes.all %}
+          {% include 'servers/purpose.html' with purpose=purpose %}
       {% endfor %}
-    </table>
+    </div>
+    {% endif %}
+
+    {% if server.has_solus %}
+      <div class="tab-pane" id="solus">
+        <div class="col-md-12 text-center">
+          <a href="#" class="btn btn-success disabled">Loading data...</a>
+        </div>
+        <br />
+      </div>
+    {% endif %}
+
+    {% if server.has_responder %}
+      <div class="tab-pane" id="responder">
+        <div class="col-md-12 text-center">
+          <a href="#" class="btn btn-success disabled">Loading data...</a>
+        </div>
+        <br />
+      </div>
+    {% endif %}
   </div>
-  {% endif %}
 
   <div class="btn-group btn-group-justified">
     <a class="btn btn-success" href="{% url 'admin:servers_server_add' %}">Create New</a>
@@ -178,4 +235,108 @@
     <a class="btn btn-danger" href="{% url 'admin:servers_server_delete' server.pk %}">Delete</a>
   </div>
   <br />
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script type="text/javascript">
+  {% if server.has_solus %}
+  function mark_fail(selector){
+    $("#" + selector).removeClass('btn-success');
+    $("#" + selector).addClass('btn-danger');
+    $("#" + selector).removeClass('disabled');
+  }
+
+  function mark_success(selector){
+    $("#" + selector).removeClass('btn-danger');
+    $("#" + selector).addClass('btn-success');
+    $("#" + selector).removeClass('disabled');
+  }
+
+  function update_spec(spec_name){
+    $("#button-" + spec_name).addClass('disabled');
+    var data = {
+      server: {{ server.pk }},
+      attribute: spec_name,
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    $.post("{% url 'servers.views.update_server' %}", data).done(function(data) {
+      if (data["success"]){
+        if ('spec-bandwidth' in data){
+          $('#spec-bandwidth').html(data["spec-bandwidth"] + ' GB')
+        } else if ('spec-ram' in data) {
+          $('#spec-ram').html(data["spec-ram"] + ' MB')
+        } else if ('spec-hdd' in data){
+          $('#spec-hdd').html(data["spec-hdd"] + ' GB')
+        }
+        mark_success("button-" + spec_name);
+      } else {
+        mark_fail("button-" + spec_name);
+      }
+    });
+  }
+
+  function update_ips(){
+    $("#ip-update-button").addClass('disabled');
+    var data = {
+      server: {{ server.pk }},
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    $.post("{% url 'servers.views.update_ips' %}", data).done(function(data) {
+      if (data["success"]){
+        $("#extra-ips").html(data["ips"]);
+        mark_success("ip-update-button");
+      } else {
+        mark_fail("ip-update-button");
+      }
+    });
+  }
+
+  function update_solus(button){
+    var data = {
+      server: {{ server.pk }},
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    if(button){
+      $("#all-solus-request").addClass('disabled');
+    }
+    $.post("{% url 'servers.views.get_solus_data' %}", data).done(function(data) {
+      if (data['success']){
+        $('#solus').html(data['html']);
+      } else {
+        $('#solus').html("Request could not be handled.");
+      }
+    });
+  }
+  {% endif %}
+
+  {% if server.has_responder %}
+  function update_responder(button){
+    var data = {
+      server: {{ server.pk }},
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    if(button){
+      $("#all-responder-request").addClass('disabled');
+    }
+    $.post("{% url 'servers.views.get_responder_data' %}", data).done(function(data) {
+      if (data['success']){
+        $('#responder').html(data['html']);
+      } else {
+        $('#responder').html("Request could not be handled.");
+      }
+    });
+  }
+  {% endif %}
+
+  $(document).ready(function(){
+    {% if server.has_solus %}
+    update_solus(false);
+    {% endif %}
+    {% if server.has_responder %}
+    update_responder(false);
+    {% endif %}
+  })
+</script>
 {% endblock %}

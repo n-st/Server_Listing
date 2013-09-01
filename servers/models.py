@@ -4,6 +4,21 @@ from django.core.urlresolvers import reverse
 from datetime import timedelta
 from ping import Ping
 from django.conf import settings
+from servers.emailers import send_failure, send_back_up
+from servers.solusapi import SolusAPI as SolusConnectorAPI
+from servers.responder_api import ResponderAPI as ResponderConnectorAPI
+
+
+class Purpose(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(default='', blank=True)
+    purpose_website = models.URLField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Server(models.Model):
@@ -26,6 +41,7 @@ class Server(models.Model):
 
     name = models.CharField(max_length=255)
     notes = models.TextField(default='', blank=True)
+    purposes = models.ManyToManyField(Purpose, blank=True, null=True)
 
     cost = models.DecimalField(max_digits=20, decimal_places=2)
     main_ip = models.GenericIPAddressField()
@@ -45,6 +61,7 @@ class Server(models.Model):
 
     check_status = models.BooleanField(default=True)
 
+
     def __unicode__(self):
         return self.name
 
@@ -61,9 +78,6 @@ class Server(models.Model):
         if self.notes == '':
             return False
         return True
-
-    def html_notes(self):
-        return '<br />'.join(self.notes.split('\n'))
 
     def next_due_date(self):
         if self.billing_type == self.MONTHLY:
@@ -126,6 +140,21 @@ class Server(models.Model):
             prog_type = 'danger'
         return prog_type
 
+    def has_purpose(self):
+        if self.purposes.count() > 0:
+            return True
+        return False
+
+    def has_solus(self):
+        if self.solusapi is not None:
+            return True
+        return False
+
+    def has_responder(self):
+        if self.responderapi is not None:
+            return True
+        return False
+
 
 class Extra_IP(models.Model):
     server = models.ForeignKey(Server)
@@ -160,6 +189,11 @@ class ServerCheck(models.Model):
         check_log.online = checker.is_online
 
         check_log.save()
+        if check_log.did_change:
+            if checker.is_online:
+                send_back_up(checker, check_log)
+            else:
+                send_failure(checker, check_log)
         return check_log
 
     def save(self, force_insert=False, force_update=False, using=None,
@@ -205,3 +239,93 @@ class ServerCheck(models.Model):
         else:
             return self.check_date
 
+
+class SolusAPI(models.Model):
+    api_url = models.URLField()
+    api_key = models.CharField(max_length=255)
+    api_hash = models.CharField(max_length=255)
+    server = models.OneToOneField(Server)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def update_ip_list(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+
+        ips = api.get_ips()
+        if ips:
+            current_ip_list = [self.server.main_ip]
+            for ip in self.server.extra_ip_set.all():
+                current_ip_list.append(ip.ip)
+
+            for ip in ips:
+                if ip in current_ip_list:
+                    continue
+                else:
+                    Extra_IP(ip=ip, server=self.server).save()
+            return True
+        return False
+
+    def update_bandwidth(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+
+        bandwidth = api.get_bandwidth()
+        if bandwidth:
+            self.server.bandwidth = bandwidth["total"]
+            self.server.save()
+            return self.server.bandwidth
+        return False
+
+    def update_ram(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+
+        memory = api.get_memory()
+        if memory:
+            self.server.ram = memory["total"]
+            self.server.save()
+            return self.server.ram
+        return False
+
+    def update_hdd(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+
+        hdd = api.get_hdd()
+        if hdd:
+            self.server.hdd_space = hdd["total"]
+            self.server.save()
+            return self.server.hdd_space
+        return False
+
+    def get_raw_api(self):
+        api = SolusConnectorAPI(
+            url=self.api_url,
+            api_key=self.api_key,
+            api_hash=self.api_hash
+        )
+        return api
+
+
+class ResponderAPI(models.Model):
+    api_url = models.GenericIPAddressField()
+    api_key = models.CharField(max_length=255)
+    api_port = models.IntegerField(max_length=8)
+    server = models.OneToOneField(Server)
+
+    def get_responder_data(self):
+        return ResponderConnectorAPI(self.api_key, self.api_url, self.api_port).send_request()
