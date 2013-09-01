@@ -229,9 +229,9 @@
 
 
 {% block extra_js %}
-{% if server.has_solus %}
-<script type="text/javascript">
 
+<script type="text/javascript">
+  {% if server.has_solus %}
   function mark_fail(selector){
     $("#" + selector).removeClass('btn-success');
     $("#" + selector).addClass('btn-danger');
@@ -299,10 +299,34 @@
       }
     });
   }
+  {% endif %}
+
+  {% if server.has_responder %}
+  function update_responder(button){
+    var data = {
+      server: {{ server.pk }},
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+    if(button){
+      $("#all-responder-request").addClass('disabled');
+    }
+    $.post("{% url 'servers.views.get_responder_data' %}", data).done(function(data) {
+      if (data['success']){
+        $('#responder').html(data['html']);
+      } else {
+        $('#responder').html("Request could not be handled.");
+      }
+    });
+  }
+  {% endif %}
 
   $(document).ready(function(){
+    {% if server.has_solus %}
     update_solus(false);
+    {% endif %}
+    {% if server.has_responder %}
+    update_responder(false);
+    {% endif %}
   })
 </script>
-{% endif %}
 {% endblock %}

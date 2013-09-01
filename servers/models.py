@@ -150,6 +150,11 @@ class Server(models.Model):
             return True
         return False
 
+    def has_responder(self):
+        if self.responderapi is not None:
+            return True
+        return False
+
 
 class Extra_IP(models.Model):
     server = models.ForeignKey(Server)
