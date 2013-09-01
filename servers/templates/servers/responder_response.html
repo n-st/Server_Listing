@@ -76,9 +76,9 @@
         <tr>
           <td><strong>CPU Load</strong></td>
           <td>
-            {{ data.cpu.load.0|floatformat:2 }} (1 min)
-            {{ data.cpu.load.1|floatformat:2 }} (5 min)
-            {{ data.cpu.load.2|floatformat:2 }} (15 min)
+            <span class="text-success">{{ data.cpu.load.0|floatformat:2 }} (1 min)</span>,
+            <span class="text-info">{{ data.cpu.load.1|floatformat:2 }} (5 min)</span>,
+            <span class="text-warning">{{ data.cpu.load.2|floatformat:2 }} (15 min)</span>
           </td>
         </tr>
         <tr>
