@@ -30,7 +30,7 @@ class ServerAdmin(admin.ModelAdmin):
 
 
 class ServerCheckAdmin(admin.ModelAdmin):
-    list_display = ('server_name', 'online', 'did_change')
+    list_display = ('server_name', 'online')
 
 admin.site.register(Server, ServerAdmin)
 admin.site.register(Purpose)
