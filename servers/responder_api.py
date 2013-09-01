@@ -29,6 +29,11 @@ class ResponderAPI():
         for key in keys:
             self.response["mem"][key + "_meg"] = bytes_to_megs(self.response["mem"][key])
 
+    def process_hdd(self):
+        keys = [key for key in self.response["disk"]]
+        for key in keys:
+            self.response["disk"][key + "_meg"] = bytes_to_megs(self.response["disk"][key])
+
     def send_request(self):
         try:
             request = requests.get(self.url, params=self.params)
@@ -40,5 +45,6 @@ class ResponderAPI():
         self.response = request.json()
 
         self.process_mem()
+        self.process_hdd()
 
         return self
