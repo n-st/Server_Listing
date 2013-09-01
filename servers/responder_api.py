@@ -1,5 +1,5 @@
 import requests
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectionError
 
 
 class ResponderAPI():
@@ -21,11 +21,10 @@ class ResponderAPI():
         }
 
     def send_request(self):
-        request = requests.get(self.url, params=self.params)
-
         try:
+            request = requests.get(self.url, params=self.params)
             request.raise_for_status()
-        except HTTPError as e:
+        except (HTTPError, ConnectionError):
             self.success = False
             self.error = "Could not communicate with the server"
             return self
