@@ -21,7 +21,7 @@ class ResponderAPI():
             "auth_key": self.key,
         }
 
-    def get(self):
+    def send_request(self):
         request = requests.get(self.url, params=self.params)
 
         try:
