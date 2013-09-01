@@ -6,6 +6,7 @@ from ping import Ping
 from django.conf import settings
 from servers.emailers import send_failure, send_back_up
 from servers.solusapi import SolusAPI as SolusConnectorAPI
+from servers.responder_api import ResponderAPI
 
 
 class Purpose(models.Model):
@@ -320,3 +321,6 @@ class ResponderAPI(models.Model):
     api_key = models.CharField(max_length=255)
     api_port = models.IntegerField(max_length=8)
     server = models.OneToOneField(Server)
+
+    def get_responder_data(self):
+        ResponderAPI(self.api_key, self.api_url, self.api_port)
