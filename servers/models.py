@@ -72,6 +72,12 @@ class Server(models.Model):
     def get_ip(self):
         return self.main_ip
 
+    def get_ips(self):
+        current_ip_list = [self.main_ip]
+        for ip in self.extra_ip_set.all():
+            current_ip_list.append(ip.ip)
+        return current_ip_list
+
     def total_ip_count(self):
         return self.extra_ip_set.count() + 1
 
