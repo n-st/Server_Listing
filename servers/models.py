@@ -149,6 +149,9 @@ class Server(models.Model):
             return True
         return False
 
+    def has_burst(self):
+        return self.virt_type == self.OPENVZ
+
     def has_solus(self):
         if self.solusapi is not None:
             return True

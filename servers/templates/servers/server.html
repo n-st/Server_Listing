@@ -129,10 +129,12 @@
             </td>
           </tr>
 
-          <tr>
-            <td><strong>Burstable RAM</strong></td>
-            <td>{{ server.burst }} MB</td>
-          </tr>
+          {% if server.has_burst %}
+            <tr>
+              <td><strong>Burstable RAM</strong></td>
+              <td>{{ server.burst }} MB</td>
+            </tr>
+          {% endif %}
 
           <tr>
             <td><strong>HDD Capacity</strong></td>
