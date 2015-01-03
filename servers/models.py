@@ -33,10 +33,14 @@ class Server(models.Model):
 
     OPENVZ = 'o'
     KVM = 'k'
+    XEN = 'x'
+    DEDICATED = 'd'
 
     VIRT_TYPES = (
         (OPENVZ, 'OpenVZ'),
         (KVM, 'KVM'),
+        (XEN, 'Xen'),
+        (DEDICATED, 'dedicated'),
     )
 
     name = models.CharField(max_length=255)
