@@ -17,7 +17,7 @@ class ResponderInline(admin.StackedInline):
 
 class ServerAdmin(admin.ModelAdmin):
     list_filter = ('name', 'created_at')
-    list_display = ('name', 'cost', 'main_ip', 'purchased_at')
+    list_display = ('name', 'cost', 'currency', 'main_ip', 'purchased_at')
     search_fields = ['name']
     filter_horizontal = ('purposes',)
 

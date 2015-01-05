@@ -30,7 +30,7 @@
             <span class="label label-warning">Not in use</span>
           {% endif %}
         </td>
-        <td>${{ server.cost }}</td>
+        <td>{{ server.currency }}&nbsp;{{ server.cost }}</td>
         <td>{{ server.get_ips|join:"<br />" }}</td>
         <td>{{ server.purchased_at }}</td>
         <td>{% include 'servers/progress_bar.html' with percentage=server.percentage_time_used type=server.bar_type %}</td>
