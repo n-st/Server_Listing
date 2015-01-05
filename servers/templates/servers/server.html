@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-  Server Details
-  <small>
-    {{ server.name }}
-    {% if server.check_status %}
+  Server Details:
+  <span class="text-info">{{ server.name }}</span>
+  {% if server.check_status %}
+    <small>
       {% if server.is_up %}
         <span class="label label-success">Server Online!</span>
       {% else %}
         <span class="label label-danger">Server Offline!</span>
       {% endif %}
-    {% endif %}
-  </small>
+    </small>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -30,7 +30,7 @@
   <div class="tab-content">
     <div class="tab-pane active" id="details">
       <div class="panel panel-default">
-        <div class="panel-heading"><span class="text-info">{{ server.name }}</span> details</div>
+        <div class="panel-heading"><strong class="text-info">{{ server.name }}</strong> details</div>
         <table class="table">
 
           <tr>
@@ -103,7 +103,7 @@
     </div>
     <div class="tab-pane" id="specification">
       <div class="panel panel-default">
-        <div class="panel-heading"><span class="text-info">{{ server.name }}</span> specification</div>
+        <div class="panel-heading"><strong class="text-info">{{ server.name }}</strong> specification</div>
         <table class="table">
 
           <tr>
