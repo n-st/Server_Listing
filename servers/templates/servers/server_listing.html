@@ -13,7 +13,6 @@
         <th>IPs</th>
         <th>Purchased on</th>
         <th>Next due on</th>
-        <th>Time left</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -35,7 +34,6 @@
         <td>{{ server.get_ips|join:"<br />" }}</td>
         <td>{{ server.purchased_at }}</td>
         <td>{{ server.next_due_date }}<br /><span class="text-success">({% if server.billed_automatically %}billed automatically{% else %}{{ server.next_due_date | timeuntil }}{% endif %})</span></td>
-        <td>{% include 'servers/progress_bar.html' with percentage=server.percentage_time_used type=server.bar_type %}</td>
         <td>
           {% if server.check_status %}
             {% if server.is_up %}
