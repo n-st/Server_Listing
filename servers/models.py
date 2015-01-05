@@ -78,6 +78,7 @@ class Server(models.Model):
 
     billing_type = models.CharField(max_length=1, choices=BILLING_CHOICES, default=MONTHLY)
     purchased_at = models.DateField(default=timezone.now)
+    billed_at = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -109,7 +110,7 @@ class Server(models.Model):
 
     def next_due_date(self):
         if self.billing_type == self.MONTHLY:
-            test_time = timezone.now().date().replace(day=self.purchased_at.day)
+            test_time = timezone.now().date().replace(day=self.billed_at.day)
             if test_time < timezone.now().date():
                 if test_time.month == 12:
                     test_time = test_time.replace(month=1)
@@ -117,7 +118,7 @@ class Server(models.Model):
                     test_time = test_time.replace(month=test_time.month+1)
             return test_time
         else:
-            test_time = timezone.now().date().replace(day=self.purchased_at.day, month=self.purchased_at.month)
+            test_time = timezone.now().date().replace(day=self.billed_at.day, month=self.billed_at.month)
             if test_time < timezone.now().date():
                 test_time = test_time.replace(year=test_time.year+1)
             return test_time
