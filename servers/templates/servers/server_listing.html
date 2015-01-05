@@ -41,6 +41,8 @@
             {% else %}
               <span class="label label-danger">Offline</span>
             {% endif %}
+            <br />
+            {{ server.time_since_last_change | timesince }}
           {% else %}
             <span class="label label-info">Not Checking</span>
           {% endif %}
