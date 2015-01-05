@@ -34,7 +34,7 @@
         <td>{{ server.currency }}&nbsp;{{ server.cost }}</td>
         <td>{{ server.get_ips|join:"<br />" }}</td>
         <td>{{ server.purchased_at }}</td>
-        <td>{{ server.next_due_date }}<br /><span class="text-success">({{ server.next_due_date | timeuntil }})</span></td>
+        <td>{{ server.next_due_date }}<br /><span class="text-success">({% if server.billed_automatically %}billed automatically{% else %}{{ server.next_due_date | timeuntil }}{% endif %})</span></td>
         <td>{% include 'servers/progress_bar.html' with percentage=server.percentage_time_used type=server.bar_type %}</td>
         <td>
           {% if server.check_status %}

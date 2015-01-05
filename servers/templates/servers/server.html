@@ -57,7 +57,7 @@
 
           <tr>
             <td><strong>Next due on</strong></td>
-            <td>{{ server.next_due_date }} <span class="text-success">({{ server.next_due_date | timeuntil }})</span></td>
+            <td>{{ server.next_due_date }} <span class="text-success">({% if server.billed_automatically %}billed automatically in {% endif %}{{ server.next_due_date | timeuntil }})</span></td>
           </tr>
 
           <tr>

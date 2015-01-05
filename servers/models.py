@@ -77,6 +77,7 @@ class Server(models.Model):
     virt_type = models.CharField(max_length=1, choices=VIRT_TYPES, default=OPENVZ)
 
     billing_type = models.CharField(max_length=1, choices=BILLING_CHOICES, default=MONTHLY)
+    billed_automatically = models.BooleanField(default=False)
     purchased_at = models.DateField(default=timezone.now)
     billed_at = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
