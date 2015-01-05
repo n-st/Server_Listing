@@ -116,7 +116,7 @@
           <tr>
             <td><strong>Bandwidth</strong></td>
             <td>
-              <span id="spec-bandwidth">{{ server.bandwidth }} GB</span>
+              <span id="spec-bandwidth">{{ server.bandwidth|filesizeformat }}</span>
               {% include 'servers/ajax_button.html' with attribute='spec-bandwidth' %}
             </td>
           </tr>
@@ -124,7 +124,7 @@
           <tr>
             <td><strong>Ram total</strong></td>
             <td>
-              <span id="spec-ram">{{ server.ram }} MB</span>
+              <span id="spec-ram">{{ server.ram|filesizeformat }}</span>
               {% include 'servers/ajax_button.html' with attribute='spec-ram' %}
             </td>
           </tr>
@@ -132,14 +132,14 @@
           {% if server.has_burst %}
             <tr>
               <td><strong>Burstable RAM</strong></td>
-              <td>{{ server.burst }} MB</td>
+              <td>{{ server.burst|filesizeformat }}</td>
             </tr>
           {% endif %}
 
           <tr>
             <td><strong>HDD Capacity</strong></td>
             <td>
-              <span id="spec-hdd">{{ server.hdd_space }} GB</span>
+              <span id="spec-hdd">{{ server.hdd_space|filesizeformat }}</span>
               {% include 'servers/ajax_button.html' with attribute='spec-hdd' %}
             </td>
           </tr>
@@ -266,11 +266,11 @@
     $.post("{% url 'servers.views.update_server' %}", data).done(function(data) {
       if (data["success"]){
         if ('spec-bandwidth' in data){
-          $('#spec-bandwidth').html(data["spec-bandwidth"] + ' GB')
+          $('#spec-bandwidth').html(data["spec-bandwidth"])
         } else if ('spec-ram' in data) {
-          $('#spec-ram').html(data["spec-ram"] + ' MB')
+          $('#spec-ram').html(data["spec-ram"])
         } else if ('spec-hdd' in data){
-          $('#spec-hdd').html(data["spec-hdd"] + ' GB')
+          $('#spec-hdd').html(data["spec-hdd"])
         }
         mark_success("button-" + spec_name);
       } else {

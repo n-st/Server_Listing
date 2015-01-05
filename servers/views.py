@@ -3,6 +3,7 @@ from servers.models import Server, ServerCheck
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.template.loader import render_to_string
+from django.template.defaultfilters import filesizeformat
 import json
 
 
@@ -44,19 +45,19 @@ def update_server(request):
                 if request.POST["attribute"] == 'spec-bandwidth':
                     new_bandwidth = server.solusapi.update_bandwidth()
                     if new_bandwidth:
-                        response_data["spec-bandwidth"] = new_bandwidth
+                        response_data["spec-bandwidth"] = filesizeformat(new_bandwidth)
                     else:
                         response_data = {"success": False}
                 elif request.POST["attribute"] == 'spec-ram':
                     new_ram = server.solusapi.update_ram()
                     if new_ram:
-                        response_data["spec-ram"] = new_ram
+                        response_data["spec-ram"] = filesizeformat(new_ram)
                     else:
                         response_data = {"success": False}
                 elif request.POST["attribute"] == 'spec-hdd':
                     new_hdd = server.solusapi.update_hdd()
                     if new_hdd:
-                        response_data["spec-hdd"] = new_hdd
+                        response_data["spec-hdd"] = filesizeformat(new_hdd)
                     else:
                         response_data = {"success": False}
                 else:
@@ -81,7 +82,7 @@ def get_solus_data(request):
                 response_data = {"success": False}
             else:
                 api = server.solusapi.get_raw_api()
-                if api.get_all():
+                if api.get_all(output_bw=api.BYTES, output_mem=api.BYTES, output_hdd=api.BYTES):
                     response_data['bw'] = api.bw
                     response_data['mem'] = api.ram
                     response_data['hdd'] = api.hdd

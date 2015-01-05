@@ -15,15 +15,15 @@
       <table class="table">
         <tr>
           <td><strong>Total RAM</strong></td>
-          <td>{{ memory.total }} MB</td>
+          <td>{{ memory.total|filesizeformat }}</td>
         </tr>
         <tr>
           <td><strong>Used RAM</strong></td>
-          <td>{{ memory.used }} MB</td>
+          <td>{{ memory.used|filesizeformat }}</td>
         </tr>
         <tr>
           <td><strong>Free RAM</strong></td>
-          <td>{{ memory.free }} MB</td>
+          <td>{{ memory.free|filesizeformat }}</td>
         </tr>
       </table>
     </div>
@@ -43,15 +43,15 @@
       <table class="table">
         <tr>
           <td><strong>Total HDD</strong></td>
-          <td>{{ hdd.total }} GB</td>
+          <td>{{ hdd.total|filesizeformat }}</td>
         </tr>
         <tr>
           <td><strong>Used HDD</strong></td>
-          <td>{{ hdd.used }} GB</td>
+          <td>{{ hdd.used|filesizeformat }}</td>
         </tr>
         <tr>
           <td><strong>Free HDD</strong></td>
-          <td>{{ hdd.free }} GB</td>
+          <td>{{ hdd.free|filesizeformat }}</td>
         </tr>
       </table>
     </div>
@@ -71,15 +71,15 @@
       <table class="table">
         <tr>
           <td><strong>Total Bandwidth</strong></td>
-          <td>{{ bandwidth.total }} GB</td>
+          <td>{{ bandwidth.total|filesizeformat }}</td>
         </tr>
         <tr>
           <td><strong>Used Bandwidth</strong></td>
-          <td>{{ bandwidth.used }} GB</td>
+          <td>{{ bandwidth.used|filesizeformat }}</td>
         </tr>
         <tr>
           <td><strong>Free Bandwidth</strong></td>
-          <td>{{ bandwidth.free }} GB</td>
+          <td>{{ bandwidth.free|filesizeformat }}</td>
         </tr>
       </table>
     </div>

@@ -15,6 +15,8 @@ class SolusAPI(object):
 
     GIGABYTES = 1073741824.0
     MEGABYTES = 1048576.0
+    KILOBYTES = 1024.0
+    BYTES = 1.0
 
     def __init__(self, url, api_key, api_hash):
         self.api_key = api_key

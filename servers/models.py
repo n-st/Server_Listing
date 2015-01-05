@@ -290,7 +290,7 @@ class SolusAPI(models.Model):
             api_hash=self.api_hash
         )
 
-        bandwidth = api.get_bandwidth()
+        bandwidth = api.get_bandwidth(output_format=api.BYTES)
         if bandwidth:
             self.server.bandwidth = bandwidth["total"]
             self.server.save()
@@ -304,7 +304,7 @@ class SolusAPI(models.Model):
             api_hash=self.api_hash
         )
 
-        memory = api.get_memory()
+        memory = api.get_memory(output_format=api.BYTES)
         if memory:
             self.server.ram = memory["total"]
             self.server.save()
@@ -318,7 +318,7 @@ class SolusAPI(models.Model):
             api_hash=self.api_hash
         )
 
-        hdd = api.get_hdd()
+        hdd = api.get_hdd(output_format=api.BYTES)
         if hdd:
             self.server.hdd_space = hdd["total"]
             self.server.save()
