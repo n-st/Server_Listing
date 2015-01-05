@@ -51,11 +51,11 @@ class Server(models.Model):
     main_ip = models.GenericIPAddressField()
 
     # Server details
-    number_cores = models.IntegerField(default=1)
-    bandwidth = models.IntegerField(default=0)
-    ram = models.IntegerField(default=0)
-    burst = models.IntegerField(default=0)
-    hdd_space = models.IntegerField(default=0)
+    number_cores = models.PositiveSmallIntegerField(default=1)
+    bandwidth = models.BigIntegerField(default=0)
+    ram = models.BigIntegerField(default=0)
+    burst = models.BigIntegerField(default=0)
+    hdd_space = models.BigIntegerField(default=0)
     virt_type = models.CharField(max_length=1, choices=VIRT_TYPES, default=OPENVZ)
 
     billing_type = models.CharField(max_length=1, choices=BILLING_CHOICES, default=MONTHLY)
