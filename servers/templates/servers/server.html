@@ -3,6 +3,9 @@
 {% block page_title %}
   Server Details:
   <span class="text-info">{{ server.name }}</span>
+  {% if server.is_cancelled %}
+  <span class="text-muted">(cancelled)</span>
+  {% endif %}
   {% if server.check_status %}
     <small style="float: right">
       {% if server.is_up %}
@@ -54,8 +57,8 @@
           </tr>
 
           <tr>
-            <td><strong>Next due on</strong></td>
-            <td>{{ server.next_due_date }} <span class="text-success">({% if server.billed_automatically %}billed automatically in {% endif %}{{ server.next_due_date | timeuntil }})</span></td>
+            <td><strong>Purchased on</strong></td>
+            <td>{{ server.purchased_at }}</td>
           </tr>
 
           <tr>
@@ -63,10 +66,19 @@
             <td>{{ server.get_billing_type_display }}</td>
           </tr>
 
+          {% if server.has_next_due_date %}
           <tr>
-            <td><strong>Purchased on</strong></td>
-            <td>{{ server.purchased_at }}</td>
+            <td><strong>Next due on</strong></td>
+            <td>{{ server.next_due_date }} <span class="text-success">({% if server.billed_automatically %}billed automatically in {% endif %}{{ server.next_due_date | timeuntil }})</span></td>
           </tr>
+          {% endif %}
+
+          {% if server.cancelled_at %}
+          <tr>
+            <td><strong>Cancellation effective</strong></td>
+            <td>{{ server.cancelled_at }}</td>
+          </tr>
+          {% endif %}
 
         </table>
       </div>

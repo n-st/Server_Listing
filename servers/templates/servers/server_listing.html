@@ -18,7 +18,7 @@
     </thead>
     <tbody>
       {% for server in servers %}
-      <tr>
+      <tr{% if server.is_cancelled %} class="text-muted"{% endif %}>
         <td>{{ server.pk }}</td>
         <td><a href="{% url 'servers.views.view_server' server.pk %}">{{ server.name }}</a></td>
         <td>
@@ -33,7 +33,7 @@
         <td>{{ server.currency }}&nbsp;{{ server.cost }}</td>
         <td>{{ server.get_ips|join:"<br />" }}</td>
         <td>{{ server.purchased_at }}</td>
-        <td>{{ server.next_due_date }}<br /><span class="text-success">({% if server.billed_automatically %}billed automatically{% else %}{{ server.next_due_date | timeuntil }}{% endif %})</span></td>
+        <td>{% if server.has_next_due_date %}{{ server.next_due_date }}<br /><span class="text-success">({% if server.billed_automatically %}billed automatically{% else %}{{ server.next_due_date | timeuntil }}{% endif %}){% else %}cancelled<br />effective {{ server.cancelled_at }}{% endif %}</span></td>
         <td>
           {% if server.check_status %}
             {% if server.is_up %}

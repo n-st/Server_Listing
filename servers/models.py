@@ -79,6 +79,7 @@ class Server(models.Model):
     billing_type = models.CharField(max_length=1, choices=BILLING_CHOICES, default=MONTHLY)
     billed_automatically = models.BooleanField(default=False)
     purchased_at = models.DateField(default=timezone.now)
+    cancelled_at = models.DateField(null=True, blank=True)
     billed_at = models.DateField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -108,6 +109,15 @@ class Server(models.Model):
         if self.notes == '':
             return False
         return True
+
+    def is_cancelled(self):
+        """Has the cancellation date passed, i.e. is the server gone?"""
+        return self.cancelled_at and self.cancelled_at < timezone.now().date()
+
+    def has_next_due_date(self):
+        """Do we need to pay another invoice before the server's cancellation date?"""
+        next_date = self.next_due_date()
+        return (not self.cancelled_at) or (self.cancelled_at > next_date)
 
     def next_due_date(self):
         if self.billing_type == self.MONTHLY:
