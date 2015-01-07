@@ -9,7 +9,7 @@
         <th>Id</th>
         <th>Name</th>
         <th>Purpose</th>
-        <th>Cost</th>
+        <th>Monthly cost</th>
         <th>IPs</th>
         <th>Purchased on</th>
         <th>Next due on</th>
@@ -30,7 +30,7 @@
             <span class="label label-warning">Not in use</span>
           {% endif %}
         </td>
-        <td>{{ server.currency }}&nbsp;{{ server.cost }}</td>
+        <td>{{ server.currency }}&nbsp;{% if server.get_monthly_cost == server.cost %}{{ server.cost }}{% else %}<i>{{ server.get_monthly_cost|floatformat:2 }}</i>{% endif %}</td>
         <td>{{ server.get_ips|join:"<br />" }}</td>
         <td>{{ server.purchased_at }}</td>
         <td>{% if server.has_next_due_date %}{{ server.next_due_date }}<br /><span class="text-success">({% if server.billed_automatically %}billed automatically{% else %}{{ server.next_due_date | timeuntil }}{% endif %}){% else %}cancelled<br />effective {{ server.cancelled_at }}{% endif %}</span></td>

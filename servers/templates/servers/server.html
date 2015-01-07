@@ -43,7 +43,7 @@
 
           <tr>
             <td><strong>Cost</strong></td>
-            <td>{{ server.currency }}&nbsp;{{ server.cost }}</td>
+            <td>{{ server.currency }}&nbsp;{{ server.cost }}{% if server.get_monthly_cost != server.cost %} <i>({{ server.get_monthly_cost|floatformat:2 }} per month)</i>{% endif %}</td>
           </tr>
 
           <tr>
