@@ -45,7 +45,7 @@ class Server(models.Model):
 
     USD = 'USD'
     EUR = 'EUR'
-    YEN = 'YEN'
+    JPY = 'JPY'
     GBP = 'GBP'
     CHF = 'CHF'
     CAD = 'CAD'
@@ -53,7 +53,7 @@ class Server(models.Model):
     CURRENCIES = (
         (USD, 'USD'),
         (EUR, 'EUR'),
-        (YEN, 'YEN'),
+        (JPY, 'JPY'),
         (GBP, 'GBP'),
         (CHF, 'CHF'),
         (CAD, 'CAD'),
